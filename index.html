@@ -3,71 +3,52 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Rosetta: don't memorize a language, figure it out. A daily language puzzle built on deduction and real conversation.">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='18' fill='%23946363'/%3E%3Ctext x='50' y='72' font-size='70' text-anchor='middle' fill='%23ddd9c6' font-family='serif'%3ER%3C/text%3E%3C/svg%3E">
     <link rel="stylesheet" href="styles.css">
-    <title>Rosetta - Sound it out</title>
+    <title>Rosetta - Don't memorize a language. Figure it out.</title>
 </head>
 <body>
-<div id="body">
-<menu id="nav">
-    <li class="title"><em><a href="index.html">rosetta</a></em></li>
-    <li><a href="how-to-play.html">how to play</a></li>
-    <li><a href="https://noanimaltesting.org">noanimaltesting.org</a></li>
-</menu>
-<div id="main">
+<header id="nav">
+    <nav aria-label="Main">
+        <ul>
+            <li class="title"><em><a href="index.html">rosetta</a></em></li>
+            <li><a href="how-to-play.html">how to play</a></li>
+            <li><a href="https://noanimaltesting.org">noanimaltesting.org</a></li>
+        </ul>
+    </nav>
+</header>
+<main id="main">
     <div class="container">
-        <div class="left">
+        <section class="left" aria-label="Study">
             <div class="title-box">
-                <div>
-                    <div class="title" class="rounded">
-                        <h1>rosetta</h1>
-                        <h2>day #000001 - intro</h2>
-                    </div>
-                    <div class="arrows">
-                        <button href="index.html">&lt;</button>
-                        <button href="index.html">&gt;</button>
-                    </div>
+                <h1>rosetta</h1>
+                <p class="tagline">Don't memorize a language. Figure it out.</p>
+                <div class="daybar">
+                    <button id="prev" type="button" aria-label="Previous puzzle">&lt;</button>
+                    <h2 id="day">day</h2>
+                    <button id="next" type="button" aria-label="Next puzzle">&gt;</button>
                 </div>
             </div>
-            <table id="key" class="rounded">
-                <tr>
-                    <th>
-                        phrase
-                    </th>
-                    <th>
-                        translation
-                    </th>
-                </tr>
-                <tr>
-                    <td>
-                        gobbeldy gook asouijdhioadsho
-                    </td>
-                    <td>
-                        b
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        b
-                    </td>
-                    <td>
-                        b
-                    </td>
-                </tr>
-            </table>
-        </div>
-        <div class="divisor"></div>
-        <div class="right">
+            <div id="study"></div>
+        </section>
+        <div class="divisor" aria-hidden="true"></div>
+        <section class="right" aria-label="Puzzle">
             <div class="passage rounded">
-                <h3>title</h3>
-                <div>
-                    <p>gobbeldy gook asouijdhioadsho</p>
-                    <p>gobbeldy gook asouijdhioadsho</p>
-                    <p>gobbeldy gook asouijdhioadsho</p>
-                </div>
+                <h3 id="puzzle-title">title</h3>
+                <form id="quiz"></form>
+                <div id="feedback" aria-live="polite"></div>
             </div>
-        </div>
+            <div class="meta">
+                <span id="history"></span>
+                <button id="share" type="button" class="link">share result</button>
+                <span id="share-note" aria-live="polite"></span>
+            </div>
+            <noscript><p>Rosetta needs JavaScript to run the puzzles.</p></noscript>
+        </section>
     </div>
-</div>
-</div>    
+</main>
+<script src="puzzles.js"></script>
+<script src="script.js"></script>
 </body>
 </html>
