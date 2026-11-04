@@ -50,7 +50,7 @@ li {list-style: none;}
 .right {display:flex; flex-direction: column; width:100%; gap: 2vh;}
 .right .passage {user-select: all; flex: 1; overflow-y: auto; overflow-x: hidden; overflow-wrap: break-word;}
 .right .passage h3 {text-align: center; padding: 1vh 2vw; font-size: 4vw;}
-.right .passage div {padding: 1vh 2vw 4vh 2vw;}
+.right .passage div {padding: 1vh 2vw 4vh 2vw; text-align: center;}
 .right .passage p {text-align: center; margin-bottom: 2vh; font-size: 5vw}
 
 .right .question {flex:1; overflow: auto; max-width: 40vw;}

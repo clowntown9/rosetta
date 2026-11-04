@@ -2,54 +2,47 @@ const keyElement = document.getElementById("key");
 const questionElement = document.getElementById("question-list");
 const puzzleIdElement = document.getElementById("puzzle-id");
 
-puzzleIdElement.textContent = `${dateSymbol}#000001 - ${todaysPuzzle}`;
-
-const key = [[
-    "puzzle title",
-    "&alpha;",
-    "&alpha; &beta; &gamma; &delta;",
-    [
-    ["&alpha;", "First person pronoun."],
-    ["&beta;", "To eat."],
-    ["&gamma;", "Indefinite article."],
-    ["&delta;", "An apple."],
-    ["&epsilon;", "An orange."],
-    ],
-    [
-    0,
-    "Question title?",
-    [
+const puzzles = [{
+    name: "intro",
+    title: "&alpha;",
+    passage: "&alpha; &beta; &gamma; &delta;",
+    key: [
+        ["&alpha;", "First person pronoun."],
+        ["&beta;", "To eat."],
+        ["&gamma;", "Indefinite article."],
+        ["&delta;", "An apple."],
+        ["&epsilon;", "An orange."],
+        ],
+    qTitle: "Question title?",
+    options: [
     "b",
     "default?",
     "answer c",
     ],
-    ]
-]]
+    answer: 0,
+}]
 
 let todayId = 0
-let todaysPuzzle = key[todayId][0];
+let todaysPuzzle = puzzles[todayId].name;
 let dateSymbol;
 
-if (todaysPuzzleId % 7 === 0) {
+if (todayId % 7 === 0) {
     dateSymbol = "m";
-} else if(todaysPuzzleId % 7 === 1) {
+} else if(todayId % 7 === 1) {
     dateSymbol = "t";
-} else if(todaysPuzzleId % 7 === 2) {
+} else if(todayId % 7 === 2) {
     dateSymbol = "w";
-} else if(todaysPuzzleId % 7 === 3) {
+} else if(todayId % 7 === 3) {
     dateSymbol = "r";
-} else if(todaysPuzzleId % 7 === 4) {
+} else if(todayId % 7 === 4) {
     dateSymbol = "f";
-} else if(todaysPuzzleId % 7 === 5) {
+} else if(todayId % 7 === 5) {
     dateSymbol = "s";
-} else if(todaysPuzzleId % 7 === 6) {
+} else if(todayId % 7 === 6) {
     dateSymbol = "u";
 }
 
-let todaysKey = key[todaysPuzzleId][3];
-let todaysQuestion = key[todaysPuzzleId][4];
-
-for (const [phrase, translation] of todaysKey) {
+for (const [phrase, translation] of puzzles[todayId].key) {
     const row = document.createElement("tr");
 
     const phraseCell = document.createElement("td");
@@ -62,11 +55,7 @@ for (const [phrase, translation] of todaysKey) {
 
     keyElement.appendChild(row);
 }
-
-document.getElementById("puzzle-title").innerHTML = key[todaysPuzzleId][0];
-document.getElementById("puzzle-passage").innerHTML = key[todaysPuzzleId][1];
-
-for (const option of todaysQuestion[2]) {
+for (const option of puzzles[todayId].options) {
     const listItem = document.createElement("li");
 
     const button = document.createElement("button");
@@ -76,4 +65,7 @@ for (const option of todaysQuestion[2]) {
     questionElement.appendChild(listItem);
 }
 
-document.getElementById("question-title").textContent = todaysQuestion[1];
+document.getElementById("puzzle-title").innerHTML = puzzles[todayId].name;
+document.getElementById("puzzle-passage").innerHTML = puzzles[todayId].passage;
+document.getElementById("question-title").textContent = puzzles[todayId].qTitle;
+puzzleIdElement.textContent = `${dateSymbol}#${todayId} - ${todaysPuzzle}`;
