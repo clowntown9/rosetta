@@ -37,22 +37,28 @@ li {list-style: none;}
 
 #main {background-color: var(--secondary-color); margin: 0; height:100%;}
 #main .container {margin:0 8vw; padding: 5vh 0; height: 80vh; width: 84vw;}
-
 .left {width: 40vw; flex-shrink: 0; height: 100%; display: flex; flex-direction: column;}
 .title-box .subtitle {font-size: 3vw; font-weight: 500; margin-top: 2vh;}
 .title-box {margin-bottom: 5vh;}
 .title-box .title {flex: 2;}
 .title-box .arrows {flex: 1; display: flex; flex-direction: row; justify-content: space-around;}
-.title-box .arrows button {font-size: 4vw;}
+.title-box .arrows button {font-size: 6vw;}
 .title-box > div {display: flex; justify-content:left ; align-items: center;}
 
 .divisor {height:100%; width: 5px; margin: 0 2vw; background-color: var(--tertiary-color); flex-shrink: 0;}
 
 .right {display:flex; flex-direction: column; width:100%; gap: 2vh;}
-.right .passage {user-select: all; flex: 1; overflow-y: auto; overflow-x: hidden;}
-.right .passage h3 {text-align: center; padding: 2vh 2vh;}
-.right .passage p {text-align: center; margin-bottom: 2vh;}
-.right .answer {flex:1;}
+.right .passage {user-select: all; flex: 1; overflow-y: auto; overflow-x: hidden; overflow-wrap: break-word;}
+.right .passage h3 {text-align: center; padding: 1vh 2vw; font-size: 4vw;}
+.right .passage div {padding: 1vh 2vw 4vh 2vw;}
+.right .passage p {text-align: center; margin-bottom: 2vh; font-size: 5vw}
+
+.right .question {flex:1; overflow: auto; max-width: 40vw;}
+.right .question h3 {text-align: center; padding: 2vh 2vh;}
+.right .question ol {padding: 2vh 2vw; counter-reset: question-option;}
+.right .question ol li {padding: 0.5vh 2vw; counter-increment: question-option; display: flex;}
+.right .question ol li button {flex: 1; text-align: left;}
+.right .question ol li::before {content: counter(question-option, lower-alpha) "."; color: var(--main-color); font-weight: bold; flex: 0 0 1.5em;}
 
 .container {
     display: flex;
@@ -63,9 +69,10 @@ li {list-style: none;}
 .rounded {background-color: var(--main-color-transparent); border-radius: 5px;}
 
 #key {display: flex; flex-direction: column; height: 100%; overflow-y: auto; overflow-x: hidden;}
-#key > tbody {width: 100%; display: flex; flex-direction: column; gap: 15px;}
-#key > tbody > tr {border: 0; width: 100%; display: flex; flex-direction: row; align-items: stretch; background-color: var(--main-color-transparent);}
-#key > tbody > tr > * {box-sizing: border-box; min-width: 0; width: 50%; height: auto; padding: 2vh 2vw; text-align: center; flex: 1; overflow-wrap: anywhere;}
+#key > tbody {width: 100%; display: flex; flex-direction: column; gap: 1vh;}
+#key tr {border: 0; width: 100%; display: flex; flex-direction: row; align-items: stretch; background-color: var(--main-color-transparent);}
+#key tr > * {box-sizing: border-box; min-width: 0; width: 50%; height: auto; padding: 2vh 2vw; text-align: center; flex: 1; overflow-wrap: anywhere;}
+#key tr:first-child {position: sticky; top: 0; background-color: var(--main-color); z-index: 2; color: var(--secondary-color);}
 
 #main.how-to-play .container {flex-direction: column; align-items: center;}
 #main.how-to-play .container .content {width: 50%;}
