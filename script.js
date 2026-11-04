@@ -3,7 +3,7 @@ const questionElement = document.getElementById("question-list");
 const puzzleIdElement = document.getElementById("puzzle-id");
 
 const puzzles = [{
-    name: "intro",
+    name: "aaa",
     title: "&alpha;",
     passage: "&alpha; &beta; &gamma; &delta;",
     key: [
@@ -24,23 +24,9 @@ const puzzles = [{
 
 let todayId = 0
 let todaysPuzzle = puzzles[todayId].name;
-let dateSymbol;
 
-if (todayId % 7 === 0) {
-    dateSymbol = "m";
-} else if(todayId % 7 === 1) {
-    dateSymbol = "t";
-} else if(todayId % 7 === 2) {
-    dateSymbol = "w";
-} else if(todayId % 7 === 3) {
-    dateSymbol = "r";
-} else if(todayId % 7 === 4) {
-    dateSymbol = "f";
-} else if(todayId % 7 === 5) {
-    dateSymbol = "s";
-} else if(todayId % 7 === 6) {
-    dateSymbol = "u";
-}
+function leftArrow() {todayId--; update(todayId, puzzles[todayId])}
+function rightArrow() {todayId++; update(todayId, puzzles[todayId])}
 
 for (const [phrase, translation] of puzzles[todayId].key) {
     const row = document.createElement("tr");
@@ -65,7 +51,22 @@ for (const option of puzzles[todayId].options) {
     questionElement.appendChild(listItem);
 }
 
-document.getElementById("puzzle-title").innerHTML = puzzles[todayId].name;
-document.getElementById("puzzle-passage").innerHTML = puzzles[todayId].passage;
-document.getElementById("question-title").textContent = puzzles[todayId].qTitle;
-puzzleIdElement.textContent = `${dateSymbol}#${todayId} - ${todaysPuzzle}`;
+function update() {
+    let dateSymbol;
+    if (todayId % 7 === 0) {dateSymbol = "m";}
+    else if(todayId % 7 === 1) {dateSymbol = "t";}
+    else if(todayId % 7 === 2) {dateSymbol = "w";}
+    else if(todayId % 7 === 3) {dateSymbol = "r";}
+    else if(todayId % 7 === 4) {dateSymbol = "f";}
+    else if(todayId % 7 === 5) {dateSymbol = "s";}
+    else if(todayId % 7 === 6) {dateSymbol = "u";}
+
+    document.getElementById("puzzle-title").innerHTML = puzzles[todayId].title;
+    document.getElementById("puzzle-passage").innerHTML = puzzles[todayId].passage;
+    document.getElementById("question-title").textContent = puzzles[todayId].qTitle;
+
+    let todaysPuzzle = puzzles[todayId].name;
+    document.getElementById("puzzle-id") = `${dateSymbol}#${id} ${todaysPuzzle}`;
+}
+
+update(todayId, puzzles[todayId]) 
