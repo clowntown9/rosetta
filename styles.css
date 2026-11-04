@@ -1,15 +1,20 @@
-* {margin: 0;padding: 0; font-size: 32px;}
+* {margin: 0;padding: 0; font-size: 32px; user-select: none; font-family: 'Times New Roman', Times, serif}
 a {color:inherit;text-decoration:none;}
 h1 {font-size: 8vw;}
 h2 {font-size: 2vw; font-weight: 500;}
 table {
-    border-collapse: collapse;
+    border-collapse: separate;
+    border: 0;
 }
+button {border: 0; background-color: inherit; cursor: pointer;}
 table th, table td {padding:0.5vw 2vw; height: 5vh; text-align: left;}
+li {list-style: none;}
 
 :root {
     --main-color: rgb(148, 99, 99);
+    --main-color-transparent: rgb(from var(--main-color) r g b / 20%);
     --secondary-color: rgb(221, 217, 198);
+    --tertiary-color: rgb(99, 148, 148);
 }
 #body {height:100vh; overflow: hidden;}
 
@@ -25,30 +30,42 @@ table th, table td {padding:0.5vw 2vw; height: 5vh; text-align: left;}
 #nav li {font-size: 2vw;}
 #nav li:first-child {margin-left:10vw;}
 
-#main {background-color: var(--secondary-color); margin: 0; height:100%;}
-#main .container {margin:0 10vw; padding: 5vh 0; height: 80vh; width: 80vw;}
+#example #key tbody tr td {width: 20vw;}
 
-.content {display:flex; flex-direction: row}
-.content > * {width:50%;
-    background-color: var(--main-color);
-    border-radius: 20px;}
+
+
+#main {background-color: var(--secondary-color); margin: 0; height:100%;}
+#main .container {margin:0 8vw; padding: 5vh 0; height: 80vh; width: 84vw;}
+
+.left {width: 40vw; flex-shrink: 0; height: 100%; display: flex; flex-direction: column;}
+.title-box .subtitle {font-size: 3vw; font-weight: 500; margin-top: 2vh;}
+.title-box {margin-bottom: 5vh;}
+.title-box .title {flex: 2;}
+.title-box .arrows {flex: 1; display: flex; flex-direction: row; justify-content: space-around;}
+.title-box .arrows button {font-size: 4vw;}
+.title-box > div {display: flex; justify-content:left ; align-items: center;}
+
+.divisor {height:100%; width: 5px; margin: 0 2vw; background-color: var(--tertiary-color); flex-shrink: 0;}
+
+.right {display:flex; flex-direction: column; width:100%;}
+.right .passage {height:50%; user-select: all;}
+.right .passage h3 {text-align: center; padding: 2vh 2vh;}
+.right .passage p {text-align: center; margin-bottom: 2vh;}
 
 .container {
     display: flex;
-    flex-direction: column;
-    gap: 5vh;
+    flex-direction: row;
     width: 80%;
 }
 
-#mystery {
-    display: flex;
-    flex-direction: column;
-    gap: 2vh;
-}
-#mystery > div {margin:10px;}
+.rounded {background-color: var(--main-color-transparent); border-radius: 5px;}
 
-.divisor {height:40vh; width: 5px; background-color: var(--main-color); margin: 0 2vw;}
-.subtitle {
-    font-size: 3vw;
-    font-weight: 500;
-}
+#key {display: flex; flex-direction: column; height: 100%;}
+#key > tbody {border-spacing: 0 15px; height:100%;}
+#key > tbody > tr {border: 0}
+#key > tbody > tr > * {width: 50%; padding: 2vh 2vw; text-align: center; background-color: var(--main-color-transparent)}
+#key > tbody > tr > th {background-color: inherit; color: var(--main-color); padding:0;}
+
+#main.how-to-play .container {flex-direction: column; align-items: center;}
+#main.how-to-play .container .content {width: 50%;}
+#main.how-to-play .container .content > * {margin-bottom: 4vh;}
