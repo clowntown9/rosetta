@@ -3,47 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="How to play Rosetta, the language puzzle game about discovering how a language works.">
     <link rel="stylesheet" href="styles.css">
     <title>How to Play - Rosetta</title>
 </head>
 <body>
-    <div id="body">
-        <menu id="nav">
+<header id="nav">
+    <nav aria-label="Main">
+        <ul>
             <li class="title"><em><a href="index.html">rosetta</a></em></li>
             <li><a href="how-to-play.html">how to play</a></li>
             <li><a href="https://noanimaltesting.org">noanimaltesting.org</a></li>
-        </menu>
-        <div id="main" class="how-to-play">
-            <div class="container">
-                <div class="title-box">
-                    <h1>how to play</h1>
-                </div>
-                <div class="content">
-                    <p>You are given both phrases and their translations, and a passage to translate, like so:</p>
-                    <div id="example">
-                        <table id="key" class="rounded">
-                            <tr>
-                                <th>
-                                    phrase
-                                </th>
-                                <th>
-                                    translation
-                                </th>
-                            </tr>
-                            <tr>
-                                <td>
-                                    goil
-                                </td>
-                                <td>
-                                    boil
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
-                    <p>your goal is to translate a second passage with the information given, building upon past puzzles.</p>
-                </div>
-            </div>
+        </ul>
+    </nav>
+</header>
+<main id="main" class="how-to-play">
+    <div class="container">
+        <h1>how to play</h1>
+        <div class="content">
+            <p>Rosetta is a language puzzle. You won't memorize word lists. You'll work out how a language behaves from real phrases people actually say.</p>
+            <h2>1. Observe</h2>
+            <p>Each puzzle shows a few phrases with translations, or a short conversation.</p>
+            <table class="rounded example">
+                <tr><th>phrase</th><th>translation</th></tr>
+                <tr><td>Je voudrais un café.</td><td>I would like a coffee.</td></tr>
+                <tr><td>Je voudrais un thé.</td><td>I would like a tea.</td></tr>
+            </table>
+            <h2>2. Deduce</h2>
+            <p>Look for what stays the same and what changes. Here, "Je voudrais un" stays put and only the drink changes.</p>
+            <h2>3. Apply</h2>
+            <p>Answer a question that needs the pattern. A wrong answer tells you why it doesn't work, so you can try again. There are no lives and no timers.</p>
+            <h2>4. Come back</h2>
+            <p>Use the arrows to revisit earlier puzzles. Your progress is kept in this browser. Missing a day costs you nothing. Share your result without spoiling the answer.</p>
         </div>
     </div>
+</main>
 </body>
 </html>
