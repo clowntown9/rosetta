@@ -29,6 +29,7 @@ li {list-style: none;}
 }
 #nav li {font-size: 2vw;}
 #nav li:first-child {margin-left:10vw;}
+#nav .login {margin-left: auto; margin-right: 5vw;}
 
 #example #key tbody tr td {width: 20vw;}
 
@@ -47,10 +48,11 @@ li {list-style: none;}
 
 .divisor {height:100%; width: 5px; margin: 0 2vw; background-color: var(--tertiary-color); flex-shrink: 0;}
 
-.right {display:flex; flex-direction: column; width:100%;}
-.right .passage {height:50%; user-select: all;}
+.right {display:flex; flex-direction: column; width:100%; gap: 2vh;}
+.right .passage {user-select: all; flex: 1; overflow-y: auto; overflow-x: hidden;}
 .right .passage h3 {text-align: center; padding: 2vh 2vh;}
 .right .passage p {text-align: center; margin-bottom: 2vh;}
+.right .answer {flex:1;}
 
 .container {
     display: flex;
@@ -60,11 +62,10 @@ li {list-style: none;}
 
 .rounded {background-color: var(--main-color-transparent); border-radius: 5px;}
 
-#key {display: flex; flex-direction: column; height: 100%;}
-#key > tbody {border-spacing: 0 15px; height:100%;}
-#key > tbody > tr {border: 0}
-#key > tbody > tr > * {width: 50%; padding: 2vh 2vw; text-align: center; background-color: var(--main-color-transparent)}
-#key > tbody > tr > th {background-color: inherit; color: var(--main-color); padding:0;}
+#key {display: flex; flex-direction: column; height: 100%; overflow-y: auto; overflow-x: hidden;}
+#key > tbody {width: 100%; display: flex; flex-direction: column; gap: 15px;}
+#key > tbody > tr {border: 0; width: 100%; display: flex; flex-direction: row; align-items: stretch; background-color: var(--main-color-transparent);}
+#key > tbody > tr > * {box-sizing: border-box; min-width: 0; width: 50%; height: auto; padding: 2vh 2vw; text-align: center; flex: 1; overflow-wrap: anywhere;}
 
 #main.how-to-play .container {flex-direction: column; align-items: center;}
 #main.how-to-play .container .content {width: 50%;}
