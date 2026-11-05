@@ -1,6 +1,8 @@
 const keyElement = document.getElementById("key");
 const questionElement = document.getElementById("question-list");
-const puzzleIdElement = document.getElementById("puzzle-id");
+
+let dateSymbol;
+let todayId = 0;
 
 const puzzles = [{
     name: "aaa",
@@ -20,13 +22,25 @@ const puzzles = [{
     "answer c",
     ],
     answer: 0,
-}]
+}, {}]
 
-let todayId = 0
 let todaysPuzzle = puzzles[todayId].name;
 
-function leftArrow() {todayId--; update(todayId, puzzles[todayId])}
-function rightArrow() {todayId++; update(todayId, puzzles[todayId])}
+document.getElementById("leftArrow").addEventListener("click", leftArrow())
+document.getElementById("rightArrow").addEventListener("click", rightArrow())
+
+function leftArrow() {
+    if (todayId >= 0) {
+        todayId--;
+        update();
+    }; 
+}
+function rightArrow() {
+    if (todayId < puzzles.length) {
+        todayId++;
+        update();
+    };
+}
 
 for (const [phrase, translation] of puzzles[todayId].key) {
     const row = document.createElement("tr");
@@ -52,7 +66,6 @@ for (const option of puzzles[todayId].options) {
 }
 
 function update() {
-    let dateSymbol;
     if (todayId % 7 === 0) {dateSymbol = "m";}
     else if(todayId % 7 === 1) {dateSymbol = "t";}
     else if(todayId % 7 === 2) {dateSymbol = "w";}
@@ -64,9 +77,9 @@ function update() {
     document.getElementById("puzzle-title").innerHTML = puzzles[todayId].title;
     document.getElementById("puzzle-passage").innerHTML = puzzles[todayId].passage;
     document.getElementById("question-title").textContent = puzzles[todayId].qTitle;
-
-    let todaysPuzzle = puzzles[todayId].name;
-    document.getElementById("puzzle-id") = `${dateSymbol}#${id} ${todaysPuzzle}`;
+    document.getElementById("puzzle-id").innerHTML = `${dateSymbol}#${todayId.toString().padStart(6, "0")} - ${todaysPuzzle}`;
 }
 
-update(todayId, puzzles[todayId]) 
+document.addEventListener("DOMContentLoaded", () => {
+    document.getElementById("g").innerHTML = "g"
+});

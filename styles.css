@@ -13,7 +13,7 @@ li {list-style: none;}
 :root {
     --main-color: rgb(148, 99, 99);
     --main-color-transparent: rgb(from var(--main-color) r g b / 20%);
-    --secondary-color: rgb(221, 217, 198);
+    --secondary-color: rgb(240, 237, 223);
     --tertiary-color: rgb(99, 148, 148);
 }
 #body {height:100vh; overflow: hidden;}
@@ -33,7 +33,7 @@ li {list-style: none;}
 
 #example #key tbody tr td {width: 20vw;}
 
-
+#puzzle-id {font-family: 'Courier New', Courier, monospace}
 
 #main {background-color: var(--secondary-color); margin: 0; height:100%;}
 #main .container {margin:0 8vw; padding: 5vh 0; height: 80vh; width: 84vw;}
