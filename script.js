@@ -30,13 +30,13 @@ document.getElementById("leftArrow").addEventListener("click", leftArrow())
 document.getElementById("rightArrow").addEventListener("click", rightArrow())
 
 function leftArrow() {
-    if (todayId >= 0) {
+    if (todayId > 0) {
         todayId--;
         update();
     }; 
 }
 function rightArrow() {
-    if (todayId < puzzles.length) {
+    if (todayId < puzzles.length-1) {
         todayId++;
         update();
     };
