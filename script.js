@@ -4,8 +4,9 @@ const questionElement = document.getElementById("question-list");
 let dateSymbol;
 let todayId = 0;
 
-const puzzles = [{
-    name: "aaa",
+const puzzles = [
+{
+    name: "hello",
     title: "&alpha;",
     passage: "&alpha; &beta; &gamma; &delta;",
     key: [
@@ -22,12 +23,31 @@ const puzzles = [{
     "answer c",
     ],
     answer: 0,
-}, {}]
+},
+{
+    name: "afouafwhoiawfafwhiop",
+    title: "&",
+    passage: "&alpha; &beta; &gamma; &delta;",
+    key: [
+        ["&alpha;", "First person pronoun."],
+        ["&beta;", "To eat."],
+        ["&gamma;", "Indefinite article."],
+        ["&delta;", "An apple."],
+        ["&epsilon;", "An orange."],
+        ],
+    qTitle: "Question title?",
+    options: [
+    "b",
+    "default?",
+    "answer c",
+    ],
+    answer: 0,
+}]
 
 let todaysPuzzle = puzzles[todayId].name;
 
-document.getElementById("leftArrow").addEventListener("click", leftArrow())
-document.getElementById("rightArrow").addEventListener("click", rightArrow())
+document.getElementById("leftArrow").addEventListener("click", leftArrow)
+document.getElementById("rightArrow").addEventListener("click", rightArrow)
 
 function leftArrow() {
     if (todayId > 0) {
@@ -74,6 +94,8 @@ function update() {
     else if(todayId % 7 === 5) {dateSymbol = "s";}
     else if(todayId % 7 === 6) {dateSymbol = "u";}
 
+    todaysPuzzle = puzzles[todayId].name
+
     document.getElementById("puzzle-title").innerHTML = puzzles[todayId].title;
     document.getElementById("puzzle-passage").innerHTML = puzzles[todayId].passage;
     document.getElementById("question-title").textContent = puzzles[todayId].qTitle;
@@ -81,5 +103,5 @@ function update() {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-    document.getElementById("g").innerHTML = "g"
+    update()
 });
