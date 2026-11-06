@@ -10,7 +10,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..700&family=Inter:wght@400;500;600;700&display=swap">
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles.css?v=3">
     <title>How to Play - Rosetta</title>
 </head>
 <body>
@@ -34,11 +34,10 @@
         <li class="card step">
             <h2>Observe</h2>
             <p>Each puzzle shows a few phrases with translations, or a short conversation.</p>
-            <table class="phrases">
-                <tr><th>Phrase</th><th>Translation</th></tr>
-                <tr><td>Je voudrais un café.</td><td>I would like a coffee.</td></tr>
-                <tr><td>Je voudrais un thé.</td><td>I would like a tea.</td></tr>
-            </table>
+            <ul class="phrases">
+                <li><span class="phrase" lang="fr">Je voudrais un café.</span><span class="gloss">I would like a coffee.</span></li>
+                <li><span class="phrase" lang="fr">Je voudrais un thé.</span><span class="gloss">I would like a tea.</span></li>
+            </ul>
         </li>
         <li class="card step">
             <h2>Deduce</h2>
@@ -49,8 +48,12 @@
             <p>Answer a question that needs the pattern. A wrong answer tells you why it doesn't work and is crossed out, so you can try another. There are no lives and no timers. Press A, B or C to pick from the keyboard.</p>
         </li>
         <li class="card step">
+            <h2>Share</h2>
+            <p>Solve it and share a row of squares, one per try, without spoiling the answer.</p>
+        </li>
+        <li class="card step">
             <h2>Come back</h2>
-            <p>A new puzzle unlocks every day at midnight. Use the arrows to revisit earlier puzzles. Your progress is kept in this browser. Missing a day costs you nothing. Share your result without spoiling the answer.</p>
+            <p>A new puzzle unlocks every day at midnight. Use the arrows to revisit earlier puzzles. Your progress is kept in this browser. Missing a day costs you nothing.</p>
         </li>
     </ol>
     <p class="cta"><a class="btn btn-primary" href="index.html">Play today's puzzle</a></p>

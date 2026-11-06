@@ -2,6 +2,7 @@
   "use strict";
 
   var puzzles = window.PUZZLES || [];
+  var languages = window.LANGUAGES || {};
   var EPOCH = Date.UTC(2026, 10, 4); // day #1 = 2026-11-04
   var DAY_MS = 86400000;
   var STORE = "rosetta-progress-v1";
@@ -22,12 +23,20 @@
     return Math.floor((utc - EPOCH) / DAY_MS);
   }
 
+  // The player's next local midnight, when tomorrow's puzzle unlocks.
+  function nextMidnight() {
+    var now = new Date();
+    return new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1).getTime();
+  }
+
   var today = daysSinceEpoch();
+  var unlockAt = nextMidnight();
   // Newest puzzle the player may open. Later entries stay locked until their day arrives.
   var latest = Math.max(0, Math.min(today, puzzles.length - 1));
   var outOfPuzzles = today > puzzles.length - 1;
   var progress = load();
   var current = latest;
+  var countdownTimer;
 
   function el(tag, cls, text) {
     var n = document.createElement(tag);
@@ -36,11 +45,19 @@
     return n;
   }
 
+  // Marks text as the puzzle's language so screen readers and hyphenation treat it correctly.
+  function inPuzzleLanguage(node, p) {
+    if (languages[p.language]) node.lang = languages[p.language];
+    return node;
+  }
+
   function dateLabel(index) {
     return new Date(EPOCH + index * DAY_MS).toLocaleDateString(undefined, {
       weekday: "short", month: "short", day: "numeric", timeZone: "UTC"
     });
   }
+
+  function triesLabel(n) { return n + (n === 1 ? " try" : " tries"); }
 
   function correctIndex(p) {
     for (var i = 0; i < p.choices.length; i++) {
@@ -56,10 +73,13 @@
     return record.solved ? [] : [record.last];
   }
 
-  // One square per try: red for each miss, green for the solve.
-  function trySquares(record) {
-    var misses = record.solved ? record.tries - 1 : record.tries;
-    return new Array(misses + 1).join("🟥") + (record.solved ? "🟩" : "");
+  // Solved puzzles in a row, counting back from the newest. An unsolved newest puzzle
+  // doesn't break the run yet, since the player may still be working on it.
+  function solvedInARow() {
+    var i = progress[latest] && progress[latest].solved ? latest : latest - 1;
+    var run = 0;
+    for (; i >= 0 && progress[i] && progress[i].solved; i--) run++;
+    return run;
   }
 
   function renderHistory() {
@@ -68,7 +88,8 @@
       if (progress[i] && progress[i].solved) solved++;
     }
     var released = latest + 1;
-    var text = "Solved " + solved + " of " + released;
+    var run = solvedInARow();
+    var text = "Solved " + solved + " of " + released + (run > 1 ? " · " + run + " in a row" : "");
     if (outOfPuzzles) text += ". You've played every puzzle so far, and new ones are on the way.";
     $("history").textContent = text;
     $("history-fill").style.width = (solved / released * 100) + "%";
@@ -78,22 +99,18 @@
     var box = $("study");
     box.textContent = "";
     if (p.type === "decipher") {
-      var table = el("table", "phrases");
-      var head = el("tr");
-      head.appendChild(el("th", null, "Phrase"));
-      head.appendChild(el("th", null, "Translation"));
-      table.appendChild(head);
+      var list = el("ul", "phrases");
       p.examples.forEach(function (row) {
-        var tr = el("tr");
-        tr.appendChild(el("td", null, row[0]));
-        tr.appendChild(el("td", null, row[1]));
-        table.appendChild(tr);
+        var item = el("li");
+        item.appendChild(inPuzzleLanguage(el("span", "phrase", row[0]), p));
+        item.appendChild(el("span", "gloss", row[1]));
+        list.appendChild(item);
       });
-      box.appendChild(table);
+      box.appendChild(list);
     } else {
       var convo = el("div", "convo");
       p.conversation.forEach(function (line, i) {
-        convo.appendChild(el("p", "bubble " + (i % 2 ? "them" : "me"), line));
+        convo.appendChild(inPuzzleLanguage(el("p", "bubble " + (i % 2 ? "them" : "me"), line), p));
       });
       box.appendChild(convo);
     }
@@ -113,7 +130,9 @@
       input.value = i;
       label.appendChild(input);
       label.appendChild(el("span", "key", String.fromCharCode(65 + i)));
-      label.appendChild(el("span", "text", c.text));
+      var text = el("span", "text", c.text);
+      // Decipher answers are phrases in the puzzle's language; interpret answers are English.
+      label.appendChild(p.type === "decipher" ? inPuzzleLanguage(text, p) : text);
       var mark = el("span", "mark");
       mark.setAttribute("aria-hidden", "true");
       label.appendChild(mark);
@@ -127,8 +146,10 @@
   }
 
   function setFeedback(kind, icon, children, animate) {
+    clearInterval(countdownTimer);
     var fb = $("feedback");
     fb.textContent = "";
+    if (!kind) return;
     var box = el("div", "feedback " + kind + (animate ? " enter" : ""));
     var badge = el("span", "fb-icon", icon);
     badge.setAttribute("aria-hidden", "true");
@@ -139,22 +160,54 @@
     fb.appendChild(box);
   }
 
+  function resultBlock(record) {
+    var result = el("div", "result");
+    var dots = el("span", "dots");
+    dots.setAttribute("aria-hidden", "true");
+    for (var i = 0; i < record.tries; i++) dots.appendChild(el("span", i === record.tries - 1 ? "dot hit" : "dot"));
+    result.appendChild(dots);
+    result.appendChild(el("span", null, "Solved in " + triesLabel(record.tries)));
+    var share = el("button", "btn btn-ghost btn-small share", "Share");
+    share.type = "button";
+    share.addEventListener("click", shareResult);
+    result.appendChild(share);
+    return result;
+  }
+
+  // Counts down to the next unlock. Only shown under today's puzzle when a puzzle exists for tomorrow.
+  function countdown() {
+    var line = el("p", "next-puzzle");
+    function tick() {
+      var mins = Math.ceil((unlockAt - Date.now()) / 60000);
+      if (mins > 0) {
+        line.textContent = "Next puzzle in " + (mins >= 60 ? Math.floor(mins / 60) + "h " : "") + (mins % 60) + "m";
+        return;
+      }
+      clearInterval(countdownTimer);
+      line.textContent = "";
+      var reload = el("button", "link-btn", "Tomorrow's puzzle is ready. Play it");
+      reload.type = "button";
+      reload.addEventListener("click", function () { location.reload(); });
+      line.appendChild(reload);
+    }
+    tick();
+    countdownTimer = setInterval(tick, 30000);
+    return line;
+  }
+
   function showFeedback(p, idx, record, fresh) {
     var c = p.choices[idx];
     var parts = [el("strong", null, c.correct ? "That's it." : "Not quite."), document.createTextNode(c.why)];
     if (c.correct) {
       parts.push(el("p", "takeaway", p.takeaway));
-      var result = el("div", "result");
-      var dots = el("span", "dots");
-      dots.setAttribute("aria-hidden", "true");
-      for (var i = 0; i < record.tries; i++) dots.appendChild(el("span", i === record.tries - 1 ? "dot hit" : "dot"));
-      result.appendChild(dots);
-      result.appendChild(el("span", null, "Solved in " + record.tries + (record.tries === 1 ? " try" : " tries")));
-      parts.push(result);
+      parts.push(resultBlock(record));
     } else if (fresh) {
       parts.push(el("p", "takeaway", "Look at the examples again and try another."));
     }
     setFeedback(c.correct ? "good" : "bad", c.correct ? "✓" : "✕", parts, fresh);
+    if (c.correct && current === today && today + 1 < puzzles.length) {
+      $("feedback").querySelector(".feedback > div").appendChild(countdown());
+    }
   }
 
   // Marks tried choices and, once solved, locks the puzzle with its answer shown.
@@ -192,6 +245,7 @@
     var p = puzzles[current];
     $("day").textContent = "No. " + (current + 1);
     $("date").textContent = current === today ? "Today · " + dateLabel(current) : dateLabel(current);
+    $("to-latest").hidden = current === latest;
     $("language").textContent = p.language;
     $("level").textContent = p.level;
     $("puzzle-title").textContent = p.title;
@@ -201,9 +255,14 @@
 
     renderStudy(p);
     renderQuiz(p);
-    $("feedback").textContent = "";
+    setFeedback(null);
     if (progress[current]) applyRecord(p, progress[current], false);
     renderHistory();
+  }
+
+  function goTo(index) {
+    current = index;
+    render();
   }
 
   $("quiz").addEventListener("submit", function (e) {
@@ -224,6 +283,9 @@
     save(progress);
     applyRecord(p, progress[current], true);
     renderHistory();
+    // The control that had focus is now disabled or hidden, so hand focus to the next useful one.
+    if (correct) $("feedback").querySelector(".share").focus();
+    else $("quiz").querySelector("input:not(:disabled)").focus({ preventScroll: true });
   });
 
   // Letter keys pick the matching choice, so the whole puzzle can be played from the keyboard.
@@ -237,8 +299,9 @@
     inputs[i].focus();
   });
 
-  $("prev").addEventListener("click", function () { if (current > 0) { current--; render(); } });
-  $("next").addEventListener("click", function () { if (current < latest) { current++; render(); } });
+  $("prev").addEventListener("click", function () { if (current > 0) goTo(current - 1); });
+  $("next").addEventListener("click", function () { if (current < latest) goTo(current + 1); });
+  $("to-latest").addEventListener("click", function () { goTo(latest); });
 
   var toastTimer;
   function toast(message) {
@@ -249,20 +312,19 @@
     toastTimer = setTimeout(function () { t.classList.remove("show"); }, 2200);
   }
 
-  $("share").addEventListener("click", function () {
+  function shareResult() {
     var p = puzzles[current];
     var record = progress[current];
-    var line = !record ? "🔍 not started yet"
-      : record.solved ? trySquares(record) + " solved in " + record.tries + (record.tries === 1 ? " try" : " tries")
-      : trySquares(record) + " still figuring it out";
-    var text = "Rosetta No. " + (current + 1) + " · " + p.language + "\n" + line + "\n" + location.origin + location.pathname;
+    var squares = new Array(record.tries).join("🟥") + "🟩";
+    var text = "Rosetta No. " + (current + 1) + " · " + p.language + "\n" +
+      squares + " solved in " + triesLabel(record.tries) + "\n" + location.origin + location.pathname;
     if (navigator.clipboard && navigator.clipboard.writeText) {
       navigator.clipboard.writeText(text).then(function () { toast("Result copied. No spoilers."); },
         function () { toast("Couldn't copy. Try again."); });
     } else {
       toast("Copying isn't supported in this browser.");
     }
-  });
+  }
 
   if (puzzles.length) render();
 })();

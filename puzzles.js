@@ -1,3 +1,13 @@
+// Language tag for each puzzle `language`, so browsers and screen readers pronounce phrases
+// correctly. Add a line here when a puzzle uses a new language.
+window.LANGUAGES = {
+  French: "fr",
+  Spanish: "es",
+  German: "de",
+  Italian: "it",
+  Portuguese: "pt-BR"
+};
+
 // Handcrafted puzzles. Add new entries to the end; day #1 is the first entry.
 // type "decipher": study the examples, then pick the correct phrase.
 // type "interpret": read a conversation, then pick the correct meaning.

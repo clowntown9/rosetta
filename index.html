@@ -10,7 +10,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..700&family=Inter:wght@400;500;600;700&display=swap">
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles.css?v=3">
     <title>Rosetta - Don't memorize a language. Figure it out.</title>
 </head>
 <body>
@@ -36,6 +36,7 @@
         <div class="day-info" aria-live="polite">
             <p id="day" class="day-no"></p>
             <p id="date" class="date"></p>
+            <button id="to-latest" type="button" class="link-btn" hidden>Go to the latest puzzle</button>
         </div>
         <button id="next" type="button" class="icon-btn" aria-label="Next puzzle">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18l6-6-6-6"/></svg>
@@ -63,7 +64,6 @@
             <span id="history"></span>
             <span class="track" aria-hidden="true"><span id="history-fill" class="fill"></span></span>
         </div>
-        <button id="share" type="button" class="btn btn-ghost">Share result</button>
     </div>
     <noscript><p class="card">Rosetta needs JavaScript to run the puzzles.</p></noscript>
 </main>
@@ -71,7 +71,8 @@
     <a href="https://noanimaltesting.org">noanimaltesting.org</a>
 </footer>
 <p id="toast" class="toast" role="status" aria-live="polite"></p>
-<script src="puzzles.js"></script>
-<script src="script.js"></script>
+<!-- Bump ?v= here and on both pages' styles.css links whenever an asset changes, so browsers never pair a new page with a cached old script. -->
+<script src="puzzles.js?v=3"></script>
+<script src="script.js?v=3"></script>
 </body>
 </html>
