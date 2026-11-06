@@ -4,40 +4,61 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="How to play Rosetta, the language puzzle game about discovering how a language works.">
+    <meta name="theme-color" content="#f2eee2" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#1b1816" media="(prefers-color-scheme: dark)">
     <link rel="icon" href="favicon.svg" type="image/svg+xml">
-    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..700;1,400..700&display=swap">
+    <link rel="stylesheet" href="styles.css?v=8">
     <title>How to Play - Rosetta</title>
 </head>
 <body>
-<header id="nav">
-    <nav aria-label="Main">
-        <ul>
-            <li class="title"><em><a href="index.html">rosetta</a></em></li>
-            <li><a href="how-to-play.html">how to play</a></li>
-            <li><a href="https://noanimaltesting.org">noanimaltesting.org</a></li>
-        </ul>
-    </nav>
+<a class="skip" href="#main">Skip to content</a>
+<div class="wrap topbar">
+    <span class="descriptor sc">A daily language puzzle</span>
+    <nav aria-label="Main"><a class="sc" href="how-to-play.html" aria-current="page">How to play</a></nav>
+</div>
+<header class="wrap masthead">
+    <a class="wordmark" href="index.html" aria-label="Rosetta, today's puzzle">rosetta</a>
+    <p class="tagline">Don’t memorize a language. Figure it out.</p>
 </header>
-<main id="main" class="how-to-play">
-    <div class="container">
-        <h1>how to play</h1>
-        <div class="content">
-            <p>Rosetta is a language puzzle. You won't memorize word lists. You'll work out how a language behaves from real phrases people actually say.</p>
-            <h2>1. Observe</h2>
-            <p>Each puzzle shows a few phrases with translations, or a short conversation.</p>
-            <table class="rounded example">
-                <tr><th>phrase</th><th>translation</th></tr>
-                <tr><td>Je voudrais un café.</td><td>I would like a coffee.</td></tr>
-                <tr><td>Je voudrais un thé.</td><td>I would like a tea.</td></tr>
-            </table>
-            <h2>2. Deduce</h2>
-            <p>Look for what stays the same and what changes. Here, "Je voudrais un" stays put and only the drink changes.</p>
-            <h2>3. Apply</h2>
-            <p>Answer a question that needs the pattern. A wrong answer tells you why it doesn't work, so you can try again. There are no lives and no timers.</p>
-            <h2>4. Come back</h2>
-            <p>A new puzzle unlocks every day at midnight. Use the arrows to revisit earlier puzzles. Your progress is kept in this browser. Missing a day costs you nothing. Share your result without spoiling the answer.</p>
-        </div>
-    </div>
+<main id="main" class="wrap">
+    <div class="dateline"><span></span><p class="dateline-center sc">How to play</p><span></span></div>
+    <article class="essay">
+        <h1>Read, notice, apply.</h1>
+        <p class="lede">You won’t memorize word lists. You’ll work out how a language behaves from phrases people actually say.</p>
+        <ol class="steps">
+            <li>
+                <h2>Observe</h2>
+                <p>Each puzzle gives you a few phrases with their translations, or a short conversation.</p>
+                <ol class="examples">
+                    <li><span class="phrase" lang="fr">Je voudrais un café.</span><span class="gloss">I would like a coffee.</span></li>
+                    <li><span class="phrase" lang="fr">Je voudrais un thé.</span><span class="gloss">I would like a tea.</span></li>
+                </ol>
+            </li>
+            <li>
+                <h2>Deduce</h2>
+                <p>Look for what stays the same and what changes. Here, <i lang="fr">Je voudrais un</i> stays put and only the drink changes.</p>
+            </li>
+            <li>
+                <h2>Apply</h2>
+                <p>Answer a question that needs the pattern. A wrong answer is struck through, with a note on why it doesn’t work, so you can try another. There are no lives and no timers. The keys A, B and C pick an answer.</p>
+            </li>
+            <li>
+                <h2>Share</h2>
+                <p>Once you’ve solved it, copy your result. It says how many tries you took, never the answer.</p>
+            </li>
+            <li>
+                <h2>Come back</h2>
+                <p>A new puzzle appears every day at midnight. Earlier puzzles stay open, and your progress is kept in this browser. Missing a day costs you nothing.</p>
+            </li>
+        </ol>
+        <p class="cta"><a class="sc" href="index.html">Play today’s puzzle &rarr;</a></p>
+    </article>
 </main>
+<footer class="wrap footer sc">
+    <a href="https://noanimaltesting.org">noanimaltesting.org</a>
+</footer>
 </body>
 </html>

@@ -4,51 +4,62 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Rosetta: don't memorize a language, figure it out. A daily language puzzle built on deduction and real conversation.">
+    <meta name="theme-color" content="#f2eee2" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#1b1816" media="(prefers-color-scheme: dark)">
     <link rel="icon" href="favicon.svg" type="image/svg+xml">
-    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..700;1,400..700&display=swap">
+    <link rel="stylesheet" href="styles.css?v=8">
     <title>Rosetta - Don't memorize a language. Figure it out.</title>
 </head>
 <body>
-<header id="nav">
-    <nav aria-label="Main">
-        <ul>
-            <li class="title"><em><a href="index.html">rosetta</a></em></li>
-            <li><a href="how-to-play.html">how to play</a></li>
-            <li><a href="https://noanimaltesting.org">noanimaltesting.org</a></li>
-        </ul>
-    </nav>
+<a class="skip" href="#main">Skip to the puzzle</a>
+<div class="wrap topbar">
+    <span class="descriptor sc">A daily language puzzle</span>
+    <nav aria-label="Main"><a class="sc" href="how-to-play.html">How to play</a></nav>
+</div>
+<header class="wrap masthead">
+    <a class="wordmark" href="index.html" aria-label="Rosetta, today's puzzle">rosetta</a>
+    <p class="tagline">Don’t memorize a language. Figure it out.</p>
 </header>
-<main id="main">
-    <div class="container">
-        <section class="left" aria-label="Study">
-            <div class="title-box">
-                <h1>rosetta</h1>
-                <p class="tagline">Don't memorize a language. Figure it out.</p>
-                <div class="daybar">
-                    <button id="prev" type="button" aria-label="Previous puzzle">&lt;</button>
-                    <h2 id="day">day</h2>
-                    <button id="next" type="button" aria-label="Next puzzle">&gt;</button>
-                </div>
-            </div>
+<main id="main" class="wrap">
+    <div class="dateline">
+        <button id="prev" type="button" class="nav-btn sc" aria-label="Previous puzzle"><span aria-hidden="true">&larr;</span><span class="word"> Previous</span></button>
+        <div class="dateline-center sc" aria-live="polite">
+            <span id="day"></span>
+            <span class="sep" aria-hidden="true">&middot;</span>
+            <span id="date"></span>
+            <span class="sep" aria-hidden="true">&middot;</span>
+            <span id="language"></span>
+            <button id="to-latest" type="button" class="link-btn" hidden>Go to the latest puzzle</button>
+        </div>
+        <button id="next" type="button" class="nav-btn sc" aria-label="Next puzzle"><span class="word">Next </span><span aria-hidden="true">&rarr;</span></button>
+    </div>
+    <div class="headline">
+        <h1 id="puzzle-title"></h1>
+        <p id="intro" class="dek"></p>
+    </div>
+    <div class="board">
+        <section aria-labelledby="study-heading">
+            <h2 id="study-heading" class="label sc"></h2>
             <div id="study"></div>
         </section>
-        <div class="divisor" aria-hidden="true"></div>
-        <section class="right" aria-label="Puzzle">
-            <div class="passage rounded">
-                <h3 id="puzzle-title">title</h3>
-                <form id="quiz"></form>
-                <div id="feedback" aria-live="polite"></div>
-            </div>
-            <div class="meta">
-                <span id="history"></span>
-                <button id="share" type="button" class="link">share result</button>
-                <span id="share-note" aria-live="polite"></span>
-            </div>
-            <noscript><p>Rosetta needs JavaScript to run the puzzles.</p></noscript>
+        <section aria-labelledby="question-heading">
+            <h2 id="question-heading" class="label sc">Question</h2>
+            <form id="quiz"></form>
+            <div id="feedback" aria-live="polite"></div>
         </section>
     </div>
+    <p id="history" class="meta sc"></p>
+    <noscript><p class="meta">Rosetta needs JavaScript to run the puzzles.</p></noscript>
 </main>
-<script src="puzzles.js"></script>
-<script src="script.js"></script>
+<footer class="wrap footer sc">
+    <a href="https://noanimaltesting.org">noanimaltesting.org</a>
+</footer>
+<p id="status" class="sr-only" role="status" aria-live="polite"></p>
+<!-- Bump ?v= here and on both pages' styles.css links whenever an asset changes, so browsers never pair a new page with a cached old script. -->
+<script src="puzzles.js?v=8"></script>
+<script src="script.js?v=8"></script>
 </body>
 </html>
