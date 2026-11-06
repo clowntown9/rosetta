@@ -4,45 +4,7 @@ const questionElement = document.getElementById("question-list");
 let dateSymbol;
 let todayId = 0;
 
-const puzzles = [
-{
-    name: "hello",
-    title: "&alpha;",
-    passage: "&alpha; &beta; &gamma; &delta;",
-    key: [
-        ["&alpha;", "First person pronoun."],
-        ["&beta;", "To eat."],
-        ["&gamma;", "Indefinite article."],
-        ["&delta;", "An apple."],
-        ["&epsilon;", "An orange."],
-        ],
-    qTitle: "Question title?",
-    options: [
-    "b",
-    "default?",
-    "answer c",
-    ],
-    answer: 0,
-},
-{
-    name: "afouafwhoiawfafwhiop",
-    title: "&",
-    passage: "&alpha; &beta; &gamma; &delta;",
-    key: [
-        ["&alpha;", "First person pronoun."],
-        ["&beta;", "To eat."],
-        ["&gamma;", "Indefinite article."],
-        ["&delta;", "An apple."],
-        ["&epsilon;", "An orange."],
-        ],
-    qTitle: "Question title?",
-    options: [
-    "b",
-    "default?",
-    "answer c",
-    ],
-    answer: 0,
-}]
+import puzzles from './puzzles.json';
 
 let todaysPuzzle = puzzles[todayId].name;
 

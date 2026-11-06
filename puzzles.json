@@ -1,0 +1,28 @@
+[
+  {
+    "name": "Puzzle Name",
+    "title": "Puzzle Title",
+    "passage": "Puzzle Passage",
+    "key": [
+      [
+        "Key 1",
+        "Key 1 Definition"
+      ],
+      [
+        "Key 2",
+        "Key 2 Definition"
+      ],
+      [
+        "Key 3",
+        "Key 3 Definition"
+      ]
+    ],
+    "qTitle": "Question Title",
+    "options": [
+      "Option 1",
+      "Option 2",
+      "Option 3"
+    ],
+    "answer": 0
+  }
+]
