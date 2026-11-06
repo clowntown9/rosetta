@@ -4,7 +4,8 @@ const questionElement = document.getElementById("question-list");
 let dateSymbol;
 let todayId = 0;
 
-import puzzles from './puzzles.json';
+import puzzles from './puzzles.json' with { type: 'json' };
+console.log(puzzles);
 
 let todaysPuzzle = puzzles[todayId].name;
 
