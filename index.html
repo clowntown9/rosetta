@@ -4,50 +4,73 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Rosetta: don't memorize a language, figure it out. A daily language puzzle built on deduction and real conversation.">
+    <meta name="theme-color" content="#fbf8f1" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#262120" media="(prefers-color-scheme: dark)">
     <link rel="icon" href="favicon.svg" type="image/svg+xml">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..700&family=Inter:wght@400;500;600;700&display=swap">
     <link rel="stylesheet" href="styles.css">
     <title>Rosetta - Don't memorize a language. Figure it out.</title>
 </head>
 <body>
-<header id="nav">
-    <nav aria-label="Main">
-        <ul>
-            <li class="title"><em><a href="index.html">rosetta</a></em></li>
-            <li><a href="how-to-play.html">how to play</a></li>
-            <li><a href="https://noanimaltesting.org">noanimaltesting.org</a></li>
-        </ul>
-    </nav>
+<a class="skip" href="#main">Skip to the puzzle</a>
+<header class="site-header">
+    <div class="bar">
+        <a class="brand" href="index.html" aria-label="Rosetta, today's puzzle">
+            <img src="favicon.svg" alt="" width="30" height="30">
+            <span>rosetta</span>
+        </a>
+        <p class="tagline">Don't memorize a language. Figure it out.</p>
+        <nav aria-label="Main">
+            <a href="how-to-play.html">How to play</a>
+        </nav>
+    </div>
 </header>
-<main id="main">
-    <div class="container">
-        <section class="left" aria-label="Study">
-            <div class="title-box">
-                <h1>rosetta</h1>
-                <p class="tagline">Don't memorize a language. Figure it out.</p>
-                <div class="daybar">
-                    <button id="prev" type="button" aria-label="Previous puzzle">&lt;</button>
-                    <h2 id="day">day</h2>
-                    <button id="next" type="button" aria-label="Next puzzle">&gt;</button>
-                </div>
-            </div>
+<main id="main" class="game">
+    <h1 class="sr-only">Rosetta daily puzzle</h1>
+    <div class="dayline">
+        <button id="prev" type="button" class="icon-btn" aria-label="Previous puzzle">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>
+        </button>
+        <div class="day-info" aria-live="polite">
+            <p id="day" class="day-no"></p>
+            <p id="date" class="date"></p>
+        </div>
+        <button id="next" type="button" class="icon-btn" aria-label="Next puzzle">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18l6-6-6-6"/></svg>
+        </button>
+    </div>
+    <div class="chips">
+        <span id="language" class="chip"></span>
+        <span id="level" class="chip level"></span>
+    </div>
+    <div class="board">
+        <section class="card" aria-labelledby="study-heading">
+            <h2 id="study-heading" class="eyebrow">Study</h2>
+            <p id="intro" class="intro"></p>
             <div id="study"></div>
         </section>
-        <div class="divisor" aria-hidden="true"></div>
-        <section class="right" aria-label="Puzzle">
-            <div class="passage rounded">
-                <h3 id="puzzle-title">title</h3>
-                <form id="quiz"></form>
-                <div id="feedback" aria-live="polite"></div>
-            </div>
-            <div class="meta">
-                <span id="history"></span>
-                <button id="share" type="button" class="link">share result</button>
-                <span id="share-note" aria-live="polite"></span>
-            </div>
-            <noscript><p>Rosetta needs JavaScript to run the puzzles.</p></noscript>
+        <section class="card quiz-card" aria-labelledby="puzzle-title">
+            <h2 class="eyebrow">Puzzle</h2>
+            <h3 id="puzzle-title"></h3>
+            <form id="quiz"></form>
+            <div id="feedback" aria-live="polite"></div>
         </section>
     </div>
+    <div class="meta">
+        <div class="progress">
+            <span id="history"></span>
+            <span class="track" aria-hidden="true"><span id="history-fill" class="fill"></span></span>
+        </div>
+        <button id="share" type="button" class="btn btn-ghost">Share result</button>
+    </div>
+    <noscript><p class="card">Rosetta needs JavaScript to run the puzzles.</p></noscript>
 </main>
+<footer class="site-footer">
+    <a href="https://noanimaltesting.org">noanimaltesting.org</a>
+</footer>
+<p id="toast" class="toast" role="status" aria-live="polite"></p>
 <script src="puzzles.js"></script>
 <script src="script.js"></script>
 </body>
