@@ -66,6 +66,9 @@ legend { font-size: 1.15rem; margin-bottom: 1rem; }
 }
 .choice:hover { border-color: var(--tertiary-color); }
 .choice:has(input:checked) { border-color: var(--main-color); background: rgb(255 255 255 / 70%); }
+fieldset:disabled .choice { cursor: default; }
+fieldset:disabled .choice:hover { border-color: transparent; }
+fieldset:disabled .choice:has(input:checked) { border-color: var(--good); }
 .check {
     margin-top: 0.5rem; padding: 0.6rem 1.4rem; border-radius: 8px;
     background: var(--main-color); color: #fff;

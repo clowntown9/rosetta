@@ -14,15 +14,19 @@
     try { localStorage.setItem(STORE, JSON.stringify(p)); } catch (e) { /* storage unavailable */ }
   }
 
-  function todayIndex() {
+  // Days since day #1 by the player's local calendar date, so a new puzzle unlocks at their midnight.
+  function daysSinceEpoch() {
     var now = new Date();
     var utc = Date.UTC(now.getFullYear(), now.getMonth(), now.getDate());
-    var days = Math.floor((utc - EPOCH) / 86400000);
-    return Math.max(0, Math.min(days, puzzles.length - 1));
+    return Math.floor((utc - EPOCH) / 86400000);
   }
 
+  var today = daysSinceEpoch();
+  // Newest puzzle the player may open. Later entries stay locked until their day arrives.
+  var latest = Math.max(0, Math.min(today, puzzles.length - 1));
+  var outOfPuzzles = today > puzzles.length - 1;
   var progress = load();
-  var current = todayIndex();
+  var current = latest;
 
   function el(tag, cls, text) {
     var n = document.createElement(tag);
@@ -31,13 +35,30 @@
     return n;
   }
 
+  function renderHistory() {
+    var solved = 0;
+    for (var i = 0; i <= latest; i++) {
+      if (progress[i] && progress[i].solved) solved++;
+    }
+    var text = solved + " of " + (latest + 1) + " solved";
+    if (outOfPuzzles) text += ". That's every puzzle so far, and new ones are on the way.";
+    $("history").textContent = text;
+  }
+
+  // A solved puzzle is finished: the answer stays shown and the try count stays fixed for sharing.
+  function lockQuiz() {
+    var form = $("quiz");
+    form.querySelector("fieldset").disabled = true;
+    form.querySelector(".check").hidden = true;
+  }
+
   function render() {
     var p = puzzles[current];
     var num = ("000000" + (current + 1)).slice(-6);
     $("day").textContent = "day #" + num + " · " + p.language + " · " + p.level;
     $("puzzle-title").textContent = p.title;
     $("prev").disabled = current === 0;
-    $("next").disabled = current === puzzles.length - 1;
+    $("next").disabled = current === latest;
 
     var left = $("study");
     left.textContent = "";
@@ -90,13 +111,20 @@
 
     var done = progress[current];
     if (done) {
-      showFeedback(p, done.last, true);
-      var radio = form.querySelector('input[value="' + done.last + '"]');
-      if (radio) radio.checked = true;
+      // Older saves kept recording answers after a solve, so a solved puzzle shows its correct choice, not `last`.
+      var shown = done.solved ? correctIndex(p) : done.last;
+      showFeedback(p, shown, true);
+      form.querySelector('input[value="' + shown + '"]').checked = true;
+      if (done.solved) lockQuiz();
     }
-    $("history").textContent = Object.keys(progress).filter(function (k) {
-      return progress[k].solved;
-    }).length + " of " + puzzles.length + " solved";
+    renderHistory();
+  }
+
+  function correctIndex(p) {
+    for (var i = 0; i < p.choices.length; i++) {
+      if (p.choices[i].correct) return i;
+    }
+    throw new Error("Puzzle \"" + p.title + "\" has no correct choice");
   }
 
   function showFeedback(p, idx, quiet) {
@@ -113,6 +141,8 @@
 
   $("quiz").addEventListener("submit", function (e) {
     e.preventDefault();
+    var record = progress[current] || { tries: 0, solved: false };
+    if (record.solved) return;
     var sel = $("quiz").querySelector("input:checked");
     var fb = $("feedback");
     if (!sel) {
@@ -122,21 +152,16 @@
     }
     var idx = Number(sel.value);
     var p = puzzles[current];
-    var prev = progress[current] || { tries: 0, solved: false };
-    progress[current] = {
-      tries: prev.tries + 1,
-      solved: prev.solved || !!p.choices[idx].correct,
-      last: idx
-    };
+    var correct = !!p.choices[idx].correct;
+    progress[current] = { tries: record.tries + 1, solved: correct, last: idx };
     save(progress);
     showFeedback(p, idx, false);
-    $("history").textContent = Object.keys(progress).filter(function (k) {
-      return progress[k].solved;
-    }).length + " of " + puzzles.length + " solved";
+    if (correct) lockQuiz();
+    renderHistory();
   });
 
   $("prev").addEventListener("click", function () { if (current > 0) { current--; render(); } });
-  $("next").addEventListener("click", function () { if (current < puzzles.length - 1) { current++; render(); } });
+  $("next").addEventListener("click", function () { if (current < latest) { current++; render(); } });
 
   $("share").addEventListener("click", function () {
     var d = progress[current];
