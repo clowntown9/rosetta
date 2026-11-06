@@ -6,6 +6,7 @@
   var EPOCH = Date.UTC(2026, 10, 4); // day #1 = 2026-11-04
   var DAY_MS = 86400000;
   var STORE = "rosetta-progress-v1";
+  var ORDINALS = ["first", "second", "third", "fourth", "fifth", "sixth", "seventh", "eighth", "ninth", "tenth"];
 
   function $(id) { return document.getElementById(id); }
 
@@ -51,13 +52,22 @@
     return node;
   }
 
+  // Puzzle text is authored with straight quotes; set them as typographic quotes and apostrophes.
+  function typeset(text) {
+    return text.replace(/"([^"]*)"/g, "“$1”").replace(/'/g, "’");
+  }
+
   function dateLabel(index) {
     return new Date(EPOCH + index * DAY_MS).toLocaleDateString(undefined, {
-      weekday: "short", month: "short", day: "numeric", timeZone: "UTC"
+      weekday: "long", month: "long", day: "numeric", year: "numeric", timeZone: "UTC"
     });
   }
 
-  function triesLabel(n) { return n + (n === 1 ? " try" : " tries"); }
+  function solvedSentence(tries) {
+    return ORDINALS[tries - 1] ? "Solved on the " + ORDINALS[tries - 1] + " try." : "Solved in " + tries + " tries.";
+  }
+
+  function plural(n, word) { return n + " " + word + (n === 1 ? "" : "s"); }
 
   function correctIndex(p) {
     for (var i = 0; i < p.choices.length; i++) {
@@ -87,32 +97,35 @@
     for (var i = 0; i <= latest; i++) {
       if (progress[i] && progress[i].solved) solved++;
     }
-    var released = latest + 1;
     var run = solvedInARow();
-    var text = "Solved " + solved + " of " + released + (run > 1 ? " · " + run + " in a row" : "");
-    if (outOfPuzzles) text += ". You've played every puzzle so far, and new ones are on the way.";
+    var text = "Solved " + solved + " of " + (latest + 1) + (run > 1 ? " · " + run + " in a row" : "");
+    if (outOfPuzzles) text += ". You’ve played every puzzle so far, and new ones are on the way.";
     $("history").textContent = text;
-    $("history-fill").style.width = (solved / released * 100) + "%";
   }
 
   function renderStudy(p) {
     var box = $("study");
     box.textContent = "";
     if (p.type === "decipher") {
-      var list = el("ul", "phrases");
+      $("study-heading").textContent = "Examples";
+      var examples = el("ol", "examples");
       p.examples.forEach(function (row) {
         var item = el("li");
         item.appendChild(inPuzzleLanguage(el("span", "phrase", row[0]), p));
-        item.appendChild(el("span", "gloss", row[1]));
-        list.appendChild(item);
+        item.appendChild(el("span", "gloss", typeset(row[1])));
+        examples.appendChild(item);
       });
-      box.appendChild(list);
+      box.appendChild(examples);
     } else {
-      var convo = el("div", "convo");
+      $("study-heading").textContent = "Conversation";
+      var dialogue = el("ol", "dialogue");
       p.conversation.forEach(function (line, i) {
-        convo.appendChild(inPuzzleLanguage(el("p", "bubble " + (i % 2 ? "them" : "me"), line), p));
+        var item = el("li");
+        item.appendChild(el("span", "speaker sc", i % 2 ? "B" : "A"));
+        item.appendChild(inPuzzleLanguage(el("span", "line", line), p));
+        dialogue.appendChild(item);
       });
-      box.appendChild(convo);
+      box.appendChild(dialogue);
     }
   }
 
@@ -120,7 +133,7 @@
     var form = $("quiz");
     form.textContent = "";
     var fs = el("fieldset");
-    fs.appendChild(el("legend", null, p.question));
+    fs.appendChild(el("legend", null, typeset(p.question)));
     var list = el("div", "choices");
     p.choices.forEach(function (c, i) {
       var label = el("label", "choice");
@@ -129,8 +142,8 @@
       input.name = "answer";
       input.value = i;
       label.appendChild(input);
-      label.appendChild(el("span", "key", String.fromCharCode(65 + i)));
-      var text = el("span", "text", c.text);
+      label.appendChild(el("span", "key", String.fromCharCode(97 + i)));
+      var text = el("span", "text", p.type === "decipher" ? c.text : typeset(c.text));
       // Decipher answers are phrases in the puzzle's language; interpret answers are English.
       label.appendChild(p.type === "decipher" ? inPuzzleLanguage(text, p) : text);
       var mark = el("span", "mark");
@@ -140,38 +153,19 @@
     });
     fs.appendChild(list);
     form.appendChild(fs);
-    var btn = el("button", "btn btn-primary check", "Check answer");
+    var btn = el("button", "check sc", "Check answer");
     btn.type = "submit";
     form.appendChild(btn);
   }
 
-  function setFeedback(kind, icon, children, animate) {
+  function setFeedback(kind, parts, animate) {
     clearInterval(countdownTimer);
     var fb = $("feedback");
     fb.textContent = "";
     if (!kind) return;
     var box = el("div", "feedback " + kind + (animate ? " enter" : ""));
-    var badge = el("span", "fb-icon", icon);
-    badge.setAttribute("aria-hidden", "true");
-    box.appendChild(badge);
-    var body = el("div");
-    children.forEach(function (c) { body.appendChild(c); });
-    box.appendChild(body);
+    parts.forEach(function (part) { box.appendChild(part); });
     fb.appendChild(box);
-  }
-
-  function resultBlock(record) {
-    var result = el("div", "result");
-    var dots = el("span", "dots");
-    dots.setAttribute("aria-hidden", "true");
-    for (var i = 0; i < record.tries; i++) dots.appendChild(el("span", i === record.tries - 1 ? "dot hit" : "dot"));
-    result.appendChild(dots);
-    result.appendChild(el("span", null, "Solved in " + triesLabel(record.tries)));
-    var share = el("button", "btn btn-ghost btn-small share", "Share");
-    share.type = "button";
-    share.addEventListener("click", shareResult);
-    result.appendChild(share);
-    return result;
   }
 
   // Counts down to the next unlock. Only shown under today's puzzle when a puzzle exists for tomorrow.
@@ -180,12 +174,13 @@
     function tick() {
       var mins = Math.ceil((unlockAt - Date.now()) / 60000);
       if (mins > 0) {
-        line.textContent = "Next puzzle in " + (mins >= 60 ? Math.floor(mins / 60) + "h " : "") + (mins % 60) + "m";
+        var hours = Math.floor(mins / 60);
+        line.textContent = "Next puzzle in " + (hours ? plural(hours, "hour") + ", " : "") + plural(mins % 60, "minute") + ".";
         return;
       }
       clearInterval(countdownTimer);
       line.textContent = "";
-      var reload = el("button", "link-btn", "Tomorrow's puzzle is ready. Play it");
+      var reload = el("button", "link-btn", "Tomorrow’s puzzle is ready.");
       reload.type = "button";
       reload.addEventListener("click", function () { location.reload(); });
       line.appendChild(reload);
@@ -195,23 +190,34 @@
     return line;
   }
 
+  function resultBlock(record) {
+    var result = el("div", "result");
+    result.appendChild(el("span", null, solvedSentence(record.tries)));
+    var share = el("button", "link-btn share sc", "Copy result");
+    share.type = "button";
+    share.addEventListener("click", shareResult);
+    result.appendChild(share);
+    if (current === today && today + 1 < puzzles.length) result.appendChild(countdown());
+    return result;
+  }
+
   function showFeedback(p, idx, record, fresh) {
     var c = p.choices[idx];
-    var parts = [el("strong", null, c.correct ? "That's it." : "Not quite."), document.createTextNode(c.why)];
+    var parts = [el("p", "verdict", c.correct ? "Correct." : "Not quite."), el("p", null, typeset(c.why))];
     if (c.correct) {
-      parts.push(el("p", "takeaway", p.takeaway));
+      var note = el("p", "note");
+      note.appendChild(el("span", "sc", "Remember"));
+      note.appendChild(el("em", null, typeset(p.takeaway)));
+      parts.push(note);
       parts.push(resultBlock(record));
     } else if (fresh) {
-      parts.push(el("p", "takeaway", "Look at the examples again and try another."));
+      parts.push(el("p", null, (p.type === "decipher" ? "Look at the examples" : "Read the conversation") + " again and try another."));
     }
-    setFeedback(c.correct ? "good" : "bad", c.correct ? "✓" : "✕", parts, fresh);
-    if (c.correct && current === today && today + 1 < puzzles.length) {
-      $("feedback").querySelector(".feedback > div").appendChild(countdown());
-    }
+    setFeedback(c.correct ? "good" : "bad", parts, fresh);
   }
 
   // Marks tried choices and, once solved, locks the puzzle with its answer shown.
-  // `fresh` is true right after a guess, which animates the change and adds a nudge to retry.
+  // `fresh` is true right after a guess, which animates the note and adds a nudge to retry.
   function applyRecord(p, record, fresh) {
     var labels = $("quiz").querySelectorAll(".choice");
     wrongGuesses(record).forEach(function (i) {
@@ -219,9 +225,7 @@
       if (label.classList.contains("is-wrong")) return; // marked by an earlier guess
       label.classList.add("is-wrong");
       label.querySelector("input").disabled = true;
-      label.querySelector(".mark").textContent = "✕";
       label.appendChild(el("span", "sr-only", " (wrong)"));
-      if (fresh && i === record.last) label.classList.add("just-wrong");
     });
     var checked = $("quiz").querySelector("input:checked");
     if (checked && checked.disabled) checked.checked = false;
@@ -232,7 +236,6 @@
       right.querySelector("input").checked = true;
       right.querySelector(".mark").textContent = "✓";
       right.appendChild(el("span", "sr-only", " (correct)"));
-      if (fresh) right.classList.add("just-correct");
       $("quiz").querySelector("fieldset").disabled = true;
       $("quiz").querySelector(".check").hidden = true;
       showFeedback(p, correctIndex(p), record, fresh);
@@ -244,12 +247,11 @@
   function render() {
     var p = puzzles[current];
     $("day").textContent = "No. " + (current + 1);
-    $("date").textContent = current === today ? "Today · " + dateLabel(current) : dateLabel(current);
+    $("date").textContent = dateLabel(current);
+    $("language").textContent = p.language + ", " + p.level.toLowerCase();
     $("to-latest").hidden = current === latest;
-    $("language").textContent = p.language;
-    $("level").textContent = p.level;
-    $("puzzle-title").textContent = p.title;
-    $("intro").textContent = p.intro;
+    $("puzzle-title").textContent = typeset(p.title);
+    $("intro").textContent = typeset(p.intro);
     $("prev").disabled = current === 0;
     $("next").disabled = current === latest;
 
@@ -271,7 +273,7 @@
     if (record.solved) return;
     var sel = $("quiz").querySelector("input:checked");
     if (!sel) {
-      setFeedback("hint", "?", [document.createTextNode("Pick an answer first.")], true);
+      setFeedback("hint", [el("p", "verdict", "Pick an answer first.")], true);
       return;
     }
     var idx = Number(sel.value);
@@ -291,7 +293,7 @@
   // Letter keys pick the matching choice, so the whole puzzle can be played from the keyboard.
   document.addEventListener("keydown", function (e) {
     if (e.ctrlKey || e.metaKey || e.altKey || e.key.length !== 1) return;
-    var i = e.key.toUpperCase().charCodeAt(0) - 65;
+    var i = e.key.toLowerCase().charCodeAt(0) - 97;
     var inputs = $("quiz").querySelectorAll("input[name=answer]");
     // :disabled also covers the locked fieldset of a solved puzzle, which the property alone misses.
     if (i < 0 || i >= inputs.length || inputs[i].matches(":disabled")) return;
@@ -303,26 +305,23 @@
   $("next").addEventListener("click", function () { if (current < latest) goTo(current + 1); });
   $("to-latest").addEventListener("click", function () { goTo(latest); });
 
-  var toastTimer;
-  function toast(message) {
-    var t = $("toast");
-    t.textContent = message;
-    t.classList.add("show");
-    clearTimeout(toastTimer);
-    toastTimer = setTimeout(function () { t.classList.remove("show"); }, 2200);
-  }
-
-  function shareResult() {
+  function shareResult(e) {
+    var button = e.currentTarget;
     var p = puzzles[current];
     var record = progress[current];
-    var squares = new Array(record.tries).join("🟥") + "🟩";
-    var text = "Rosetta No. " + (current + 1) + " · " + p.language + "\n" +
-      squares + " solved in " + triesLabel(record.tries) + "\n" + location.origin + location.pathname;
+    var marks = new Array(record.tries).join("✗ ") + "✓";
+    var text = "Rosetta No. " + (current + 1) + " (" + p.language + ")\n" +
+      solvedSentence(record.tries) + " " + marks + "\n" + location.origin + location.pathname;
+    function report(label, status) {
+      button.textContent = label;
+      $("status").textContent = status;
+      setTimeout(function () { button.textContent = "Copy result"; }, 2000);
+    }
     if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(text).then(function () { toast("Result copied. No spoilers."); },
-        function () { toast("Couldn't copy. Try again."); });
+      navigator.clipboard.writeText(text).then(function () { report("Copied", "Result copied to the clipboard."); },
+        function () { report("Couldn’t copy", "Couldn’t copy the result."); });
     } else {
-      toast("Copying isn't supported in this browser.");
+      report("Couldn’t copy", "This browser can’t copy to the clipboard.");
     }
   }
 

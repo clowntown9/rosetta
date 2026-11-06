@@ -4,75 +4,62 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Rosetta: don't memorize a language, figure it out. A daily language puzzle built on deduction and real conversation.">
-    <meta name="theme-color" content="#fbf8f1" media="(prefers-color-scheme: light)">
-    <meta name="theme-color" content="#262120" media="(prefers-color-scheme: dark)">
+    <meta name="theme-color" content="#f2eee2" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#1b1816" media="(prefers-color-scheme: dark)">
     <link rel="icon" href="favicon.svg" type="image/svg+xml">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..700&family=Inter:wght@400;500;600;700&display=swap">
-    <link rel="stylesheet" href="styles.css?v=3">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..700;1,400..700&display=swap">
+    <link rel="stylesheet" href="styles.css?v=8">
     <title>Rosetta - Don't memorize a language. Figure it out.</title>
 </head>
 <body>
 <a class="skip" href="#main">Skip to the puzzle</a>
-<header class="site-header">
-    <div class="bar">
-        <a class="brand" href="index.html" aria-label="Rosetta, today's puzzle">
-            <img src="favicon.svg" alt="" width="30" height="30">
-            <span>rosetta</span>
-        </a>
-        <p class="tagline">Don't memorize a language. Figure it out.</p>
-        <nav aria-label="Main">
-            <a href="how-to-play.html">How to play</a>
-        </nav>
-    </div>
+<div class="wrap topbar">
+    <span class="descriptor sc">A daily language puzzle</span>
+    <nav aria-label="Main"><a class="sc" href="how-to-play.html">How to play</a></nav>
+</div>
+<header class="wrap masthead">
+    <a class="wordmark" href="index.html" aria-label="Rosetta, today's puzzle">rosetta</a>
+    <p class="tagline">Don’t memorize a language. Figure it out.</p>
 </header>
-<main id="main" class="game">
-    <h1 class="sr-only">Rosetta daily puzzle</h1>
-    <div class="dayline">
-        <button id="prev" type="button" class="icon-btn" aria-label="Previous puzzle">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>
-        </button>
-        <div class="day-info" aria-live="polite">
-            <p id="day" class="day-no"></p>
-            <p id="date" class="date"></p>
+<main id="main" class="wrap">
+    <div class="dateline">
+        <button id="prev" type="button" class="nav-btn sc" aria-label="Previous puzzle"><span aria-hidden="true">&larr;</span><span class="word"> Previous</span></button>
+        <div class="dateline-center sc" aria-live="polite">
+            <span id="day"></span>
+            <span class="sep" aria-hidden="true">&middot;</span>
+            <span id="date"></span>
+            <span class="sep" aria-hidden="true">&middot;</span>
+            <span id="language"></span>
             <button id="to-latest" type="button" class="link-btn" hidden>Go to the latest puzzle</button>
         </div>
-        <button id="next" type="button" class="icon-btn" aria-label="Next puzzle">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18l6-6-6-6"/></svg>
-        </button>
+        <button id="next" type="button" class="nav-btn sc" aria-label="Next puzzle"><span class="word">Next </span><span aria-hidden="true">&rarr;</span></button>
     </div>
-    <div class="chips">
-        <span id="language" class="chip"></span>
-        <span id="level" class="chip level"></span>
+    <div class="headline">
+        <h1 id="puzzle-title"></h1>
+        <p id="intro" class="dek"></p>
     </div>
     <div class="board">
-        <section class="card" aria-labelledby="study-heading">
-            <h2 id="study-heading" class="eyebrow">Study</h2>
-            <p id="intro" class="intro"></p>
+        <section aria-labelledby="study-heading">
+            <h2 id="study-heading" class="label sc"></h2>
             <div id="study"></div>
         </section>
-        <section class="card quiz-card" aria-labelledby="puzzle-title">
-            <h2 class="eyebrow">Puzzle</h2>
-            <h3 id="puzzle-title"></h3>
+        <section aria-labelledby="question-heading">
+            <h2 id="question-heading" class="label sc">Question</h2>
             <form id="quiz"></form>
             <div id="feedback" aria-live="polite"></div>
         </section>
     </div>
-    <div class="meta">
-        <div class="progress">
-            <span id="history"></span>
-            <span class="track" aria-hidden="true"><span id="history-fill" class="fill"></span></span>
-        </div>
-    </div>
-    <noscript><p class="card">Rosetta needs JavaScript to run the puzzles.</p></noscript>
+    <p id="history" class="meta sc"></p>
+    <noscript><p class="meta">Rosetta needs JavaScript to run the puzzles.</p></noscript>
 </main>
-<footer class="site-footer">
+<footer class="wrap footer sc">
     <a href="https://noanimaltesting.org">noanimaltesting.org</a>
 </footer>
-<p id="toast" class="toast" role="status" aria-live="polite"></p>
+<p id="status" class="sr-only" role="status" aria-live="polite"></p>
 <!-- Bump ?v= here and on both pages' styles.css links whenever an asset changes, so browsers never pair a new page with a cached old script. -->
-<script src="puzzles.js?v=3"></script>
-<script src="script.js?v=3"></script>
+<script src="puzzles.js?v=8"></script>
+<script src="script.js?v=8"></script>
 </body>
 </html>
