@@ -25,6 +25,14 @@ function rightArrow() {
     };
 }
 
+function answer(answer) {
+    if (answer == puzzles[todayId].answer) {
+        alert(`correct`);
+    } else {
+        alert(`${answer} ${puzzles[todayId].answer}`);
+    }
+}
+
 for (const [phrase, translation] of puzzles[todayId].key) {
     const row = document.createElement("tr");
 
@@ -43,6 +51,11 @@ for (const option of puzzles[todayId].options) {
 
     const button = document.createElement("button");
     button.textContent = option;
+    button.addEventListener("click" , () => {
+        const index = puzzles[todayId].options.indexOf(option);
+        answer(index);
+        button.disabled = true;
+    });
     listItem.appendChild(button);
 
     questionElement.appendChild(listItem);
@@ -61,7 +74,7 @@ function update() {
 
     document.getElementById("puzzle-title").innerHTML = puzzles[todayId].title;
     document.getElementById("puzzle-passage").innerHTML = puzzles[todayId].passage;
-    document.getElementById("question-title").textContent = puzzles[todayId].qTitle;
+    document.getElementById("question-title").textContent = puzzles[todayId].question;
     document.getElementById("puzzle-id").innerHTML = `${dateSymbol}#${todayId.toString().padStart(6, "0")} - ${todaysPuzzle}`;
 }
 
