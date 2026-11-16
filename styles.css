@@ -16,19 +16,20 @@ li {list-style: none;}
     --secondary-color: rgb(240, 237, 223);
     --tertiary-color: rgb(99, 148, 148);
 }
-#body {height:100vh; overflow: hidden;}
+#body {height:100vh; display: flex; flex-direction: column}
 
 #nav {
+    height: 100px;
+    flex-shrink: 0;
     color: var(--secondary-color);
     display: flex;
     flex-direction: row;
-    height: 10vh;
     gap: 5vw;
     list-style: none;
     background-color: var(--main-color);
     align-items: center;
 }
-#nav li {font-size: 2vw;}
+#nav li {font-size: 2vw; text-wrap: none;}
 #nav li:first-child {margin-left:10vw;}
 #nav .login {margin-left: auto; margin-right: 5vw;}
 
@@ -36,8 +37,8 @@ li {list-style: none;}
 
 #puzzle-id {font-family: 'Courier New', Courier, monospace}
 
-#main {background-color: var(--secondary-color); margin: 0; height:100%;}
-#main .container {margin:0 8vw; padding: 5vh 0; height: 80vh; width: 84vw;}
+#main {background-color: var(--secondary-color); margin: 0; flex: 1; min-height: 0; overflow-y: scroll;}
+#main .container {margin:0 15vw; padding: 5% 0 0; height: calc(70vh - 100px); width: 70vw;}
 .left {width: 40vw; flex-shrink: 0; height: 100%; display: flex; flex-direction: column;}
 .title-box .subtitle {font-size: 3vw; font-weight: 500; margin-top: 2vh;}
 .title-box {margin-bottom: 5vh;}
@@ -60,11 +61,13 @@ li {list-style: none;}
 .right .question ol li {padding: 0.5vh 2vw; counter-increment: question-option; display: flex;}
 .right .question ol li button {flex: 1; text-align: left;}
 .right .question ol li::before {content: counter(question-option, lower-alpha) "."; color: var(--main-color); font-weight: bold; flex: 0 0 1.5em;}
+.right .question #result {justify-self: baseline;}
 
 .container {
     display: flex;
     flex-direction: row;
     width: 80%;
+    
 }
 
 .rounded {background-color: var(--main-color-transparent); border-radius: 5px;}
@@ -74,6 +77,8 @@ li {list-style: none;}
 #key tr {border: 0; width: 100%; display: flex; flex-direction: row; align-items: stretch; background-color: var(--main-color-transparent);}
 #key tr > * {box-sizing: border-box; min-width: 0; width: 50%; height: auto; padding: 2vh 2vw; text-align: center; flex: 1; overflow-wrap: anywhere;}
 #key tr:first-child {position: sticky; top: 0; background-color: var(--main-color); z-index: 2; color: var(--secondary-color);}
+
+#status {height: 100px; flex-shrink: 0; z-index: 2; background-color: green}
 
 #main.how-to-play .container {flex-direction: column; align-items: center;}
 #main.how-to-play .container .content {width: 50%;}
