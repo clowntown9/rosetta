@@ -5,7 +5,6 @@ let dateSymbol;
 let todayId = 0;
 
 import puzzles from './puzzles.json' with { type: 'json' };
-console.log(puzzles);
 
 let todaysPuzzle = puzzles[todayId].name;
 
@@ -26,10 +25,12 @@ function rightArrow() {
 }
 
 function answer(answer) {
+    const status = document.getElementById("status")
+    status.style.display = "block";
     if (answer == puzzles[todayId].answer) {
-        alert(`correct`);
+        document.getElementById("statusMsg").textContent = "Correct!"
     } else {
-        alert(`${answer} ${puzzles[todayId].answer}`);
+        document.getElementById("statusMsg").textContent = "Incorrect"
     }
 }
 
@@ -79,5 +80,13 @@ function update() {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-    update()
+    update();
 });
+
+function close(e) {
+    document.getElementById(e).style.display = "none";
+}
+
+document.getElementById("status").addEventListener("click", () => {
+    close("status")
+})

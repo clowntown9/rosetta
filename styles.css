@@ -37,7 +37,7 @@ li {list-style: none;}
 
 #puzzle-id {font-family: 'Courier New', Courier, monospace}
 
-#main {background-color: var(--secondary-color); margin: 0; flex: 1; min-height: 0; overflow-y: scroll;}
+#main {background-color: var(--secondary-color); margin: 0; flex: 1; min-height: 0; overflow-x: hidden; overflow-y: auto;}
 #main .container {margin:0 15vw; padding: 5% 0 0; height: calc(70vh - 100px); width: 70vw;}
 .left {width: 40vw; flex-shrink: 0; height: 100%; display: flex; flex-direction: column;}
 .title-box .subtitle {font-size: 3vw; font-weight: 500; margin-top: 2vh;}
@@ -67,7 +67,6 @@ li {list-style: none;}
     display: flex;
     flex-direction: row;
     width: 80%;
-    
 }
 
 .rounded {background-color: var(--main-color-transparent); border-radius: 5px;}
@@ -78,7 +77,9 @@ li {list-style: none;}
 #key tr > * {box-sizing: border-box; min-width: 0; width: 50%; height: auto; padding: 2vh 2vw; text-align: center; flex: 1; overflow-wrap: anywhere;}
 #key tr:first-child {position: sticky; top: 0; background-color: var(--main-color); z-index: 2; color: var(--secondary-color);}
 
-#status {height: 100px; flex-shrink: 0; z-index: 2; background-color: green}
+#status {display: none; height: 100px; z-index: 2; background-color: rgb(102, 139, 102); position: absolute; bottom: 0; right: 0; left: 0}
+#status .close {position:absolute; top: 0; right: 0; padding: 5px 10px; width:auto; color: var(--secondary-color)}
+#status span {align-self: center; justify-self: center;}
 
 #main.how-to-play .container {flex-direction: column; align-items: center;}
 #main.how-to-play .container .content {width: 50%;}
