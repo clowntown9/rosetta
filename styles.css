@@ -77,9 +77,10 @@ li {list-style: none;}
 #key tr > * {box-sizing: border-box; min-width: 0; width: 50%; height: auto; padding: 2vh 2vw; text-align: center; flex: 1; overflow-wrap: anywhere;}
 #key tr:first-child {position: sticky; top: 0; background-color: var(--main-color); z-index: 2; color: var(--secondary-color);}
 
-#status {display: none; height: 100px; z-index: 2; background-color: rgb(102, 139, 102); position: absolute; bottom: 0; right: 0; left: 0}
+#status {display: none; height: 100px; z-index: 2; background-color: var(--main-color-transparent); position: absolute; bottom: 0; right: 0; left: 0; color: var(--secondary-color)}
 #status .close {position:absolute; top: 0; right: 0; padding: 5px 10px; width:auto; color: var(--secondary-color)}
-#status span {align-self: center; justify-self: center;}
+#status p {align-self: center; justify-self: center;}
+#status #dismiss {align-self: center; font-size: small;}
 
 #main.how-to-play .container {flex-direction: column; align-items: center;}
 #main.how-to-play .container .content {width: 50%;}

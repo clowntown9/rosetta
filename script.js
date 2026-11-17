@@ -27,10 +27,13 @@ function rightArrow() {
 function answer(answer) {
     const status = document.getElementById("status")
     status.style.display = "block";
+    status.style.backgroundColor = "var(--main-color-transparent)"
     if (answer == puzzles[todayId].answer) {
         document.getElementById("statusMsg").textContent = "Correct!"
+        status.style.backgroundColor = "var(--tertiary-color)"
     } else {
         document.getElementById("statusMsg").textContent = "Incorrect"
+        status.style.backgroundColor = "var(--main-color)"
     }
 }
 
