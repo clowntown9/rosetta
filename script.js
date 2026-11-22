@@ -24,6 +24,24 @@ function rightArrow() {
     };
 }
 
+function getCookie(cname) {
+    let name = cname + "=";
+    let decodedCookie = decodeURIComponent(document.cookie);
+    let ca = decodedCookie.split(';');
+    for(let i = 0; i <ca.length; i++) {
+        let c = ca[i];
+    while (c.charAt(0) == ' ') {
+        c = c.substring(1);
+    }
+    if (c.indexOf(name) == 0) {
+        return c.substring(name.length, c.length);
+    }
+    }
+    return "";
+}
+
+console.log(getCookie("completed"))
+
 function answer(answer) {
     const status = document.getElementById("status")
     status.style.display = "block";
@@ -31,6 +49,7 @@ function answer(answer) {
     if (answer == puzzles[todayId].answer) {
         document.getElementById("statusMsg").textContent = "Correct!"
         status.style.backgroundColor = "var(--tertiary-color)"
+        document.cookie = `completed=[]`
     } else {
         document.getElementById("statusMsg").textContent = "Incorrect"
         status.style.backgroundColor = "var(--main-color)"

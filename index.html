@@ -9,46 +9,48 @@
 <body>
 <div id="body">
 <menu id="nav">
+    <li class="dropdown">≡</li>
     <li class="title"><em><a href="index.html">rosetta</a></em></li>
-    <li><a href="how-to-play.html">how to play</a></li>
-    <li><a href="https://noanimaltesting.org">noanimaltesting.org</a></li>
-    <li class="login"><a href="login.html">log in</a></li>
+    <li class="extra"><a href="how-to-play.html">how to play</a></li>
+    <li class="extra"><a href="https://noanimaltesting.org">noanimaltesting.org</a></li>
+    <li class="extra login"><a href="login.html">log in</a></li>
 </menu>
 <div id="main">
-    <div class="container">
-        <div class="left">
-            <div class="title-box">
-                <div>
-                    <div class="title" class="rounded">
-                        <h1 id="g">rosetta</h1>
-                        <h2 id="puzzle-id">x#000000 -</h2>
-                    </div>
-                    <div class="arrows">
-                        <button id="leftArrow" onclick="leftArrow">&lt;</button>
-                        <button id="rightArrow" onclick="rightArrow">&gt;</button>
-                    </div>
+    <div class="title-box">
+        <div class="title-container">
+            <div class="title" class="rounded">
+                <h1 id="g">rosetta</h1>
+                <div class="arrows">
+                    <button id="leftArrow" onclick="leftArrow">&lt;</button>
+                    <button id="rightArrow" onclick="rightArrow">&gt;</button>
                 </div>
             </div>
-            <table id="key" class="rounded">
+            <h2 id="puzzle-id">x#000000 - example subtitle</h2>
+        </div>
+        <div class="divisor"></div>
+    </div>  
+    <div class="container">
+        <div class="passage rounded">
+            <h3 id="puzzle-title"></h3>
+            <div id="puzzle-passage">
+                <p></p>
+            </div>
+        </div>
+        <div class="top">
+        <table id="key" class="rounded">
                 <tr>
                     <th>phrase</th>
                     <th>translation</th>
                 </tr>
             </table>
         </div>
-        <div class="divisor"></div>
         <div class="right">
-            <div class="passage rounded">
-                <h3 id="puzzle-title"></h3>
-                <div id="puzzle-passage">
-                    <p></p>
-                </div>
-            </div>
             <div class="question rounded">
                 <h3 id="question-title"></h3>
                 <ol id="question-list"></ol>
             </div>
         </div>
+    </div>
     </div>
 </div>
 <button id="status">

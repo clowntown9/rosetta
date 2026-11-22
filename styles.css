@@ -19,7 +19,7 @@ li {list-style: none;}
 #body {height:100vh; display: flex; flex-direction: column}
 
 #nav {
-    height: 100px;
+    height: 80px;
     flex-shrink: 0;
     color: var(--secondary-color);
     display: flex;
@@ -32,30 +32,35 @@ li {list-style: none;}
 #nav li {font-size: 2vw; text-wrap: none;}
 #nav li:first-child {margin-left:10vw;}
 #nav .login {margin-left: auto; margin-right: 5vw;}
+#nav .dropdown {font-size: 50px;}
 
 #example #key tbody tr td {width: 20vw;}
 
-#puzzle-id {font-family: 'Courier New', Courier, monospace}
+#puzzle-id {font-family: 'Courier New', Courier, monospace;}
 
 #main {background-color: var(--secondary-color); margin: 0; flex: 1; min-height: 0; overflow-x: hidden; overflow-y: auto;}
-#main .container {margin:0 15vw; padding: 5% 0 0; height: calc(70vh - 100px); width: 70vw;}
-.left {width: 40vw; flex-shrink: 0; height: 100%; display: flex; flex-direction: column;}
-.title-box .subtitle {font-size: 3vw; font-weight: 500; margin-top: 2vh;}
-.title-box {margin-bottom: 5vh;}
-.title-box .title {flex: 2;}
-.title-box .arrows {flex: 1; display: flex; flex-direction: row; justify-content: space-around;}
-.title-box .arrows button {font-size: 6vw;}
-.title-box > div {display: flex; justify-content:left ; align-items: center;}
+#main .container {margin:0 15vw; padding-top: 20vw; height: fit-content; width: 70vw; overflow-y: auto;}
+#main .container > * {margin: 2vh 0}
 
-.divisor {height:100%; width: 5px; margin: 0 2vw; background-color: var(--tertiary-color); flex-shrink: 0;}
+.top {flex-shrink: 0; height: 100%; display: flex; flex-direction: column;}
+
+.title-box {position: fixed; display: flex; flex-direction: column; padding: 5% 15vw 0; height: fit-content; width: 70vw; background-color: var(--secondary-color); z-index: 10}
+.title-box > .title-container {flex: 1; display: flex; flex-direction: row; justify-content:left;}
+.title-box .title {display: flex; flex-direction: row;}
+.title-box h1 {font-size: 5vw;}
+.title-box h2 {position: relative; bottom: 0; font-size: 1vw;}
+.title-box .arrows {display: flex; width: fit-content; flex-direction: row; justify-content: space-around; margin: 0 5vw}
+.title-box .arrows button {font-size: 4vw; padding-right: 2vw;}
+#puzzle-id {width: 100%}
+
+.divisor {height:5px; width: 90%; margin: 25px 5%; background-color: var(--tertiary-color); flex-shrink: 0;}
 
 .right {display:flex; flex-direction: column; width:100%; gap: 2vh;}
-.right .passage {user-select: all; flex: 1; overflow-y: auto; overflow-x: hidden; overflow-wrap: break-word;}
-.right .passage h3 {text-align: center; padding: 1vh 2vw; font-size: 4vw;}
-.right .passage div {padding: 1vh 2vw 4vh 2vw; text-align: center;}
-.right .passage p {text-align: center; margin-bottom: 2vh; font-size: 5vw}
+.passage {user-select: all; flex: 1; overflow-y: auto; overflow-x: hidden; overflow-wrap: break-word; height:fit-content; min-height: 40vh;}
+.passage h3 {text-align: center; padding: 1vh 2vw; font-size: 4vw;}
+.passage div {padding: 1vh 2vw 4vh 2vw; text-align: center; font-size: 4vw}
 
-.right .question {flex:1; overflow: auto; max-width: 40vw;}
+.right .question {flex:1; overflow: auto;}
 .right .question h3 {text-align: center; padding: 2vh 2vh;}
 .right .question ol {padding: 2vh 2vw; counter-reset: question-option;}
 .right .question ol li {padding: 0.5vh 2vw; counter-increment: question-option; display: flex;}
@@ -63,11 +68,7 @@ li {list-style: none;}
 .right .question ol li::before {content: counter(question-option, lower-alpha) "."; color: var(--main-color); font-weight: bold; flex: 0 0 1.5em;}
 .right .question #result {justify-self: baseline;}
 
-.container {
-    display: flex;
-    flex-direction: row;
-    width: 80%;
-}
+.container {display: flex; flex-direction: column; width: 80%;}
 
 .rounded {background-color: var(--main-color-transparent); border-radius: 5px;}
 
@@ -85,3 +86,13 @@ li {list-style: none;}
 #main.how-to-play .container {flex-direction: column; align-items: center;}
 #main.how-to-play .container .content {width: 50%;}
 #main.how-to-play .container .content > * {margin-bottom: 4vh;}
+
+@media screen and (max-width: 900px) {
+    #nav .extra {display: none;}
+    #main .container {margin: 0 5vw; width: 90vw}
+    #nav .dropdown {margin-left: 10vw; display: block;}
+}
+@media screen and (min-width: 901px) {
+    #nav .dropdown {display: none}
+    #nav .title {margin-left: 10vw;}
+}
