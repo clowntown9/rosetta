@@ -39,24 +39,24 @@ li {list-style: none;}
 #puzzle-id {font-family: 'Courier New', Courier, monospace;}
 
 #main {background-color: var(--secondary-color); margin: 0; flex: 1; min-height: 0; overflow-x: hidden; overflow-y: auto;}
-#main .container {margin:0 15vw; padding-top: 20vw; height: fit-content; width: 70vw; overflow-y: auto;}
+#main .container {margin:0 15vw; padding-top: 14vw; height: fit-content; width: 70vw; overflow-y: auto;}
 #main .container > * {margin: 2vh 0}
 
 .top {flex-shrink: 0; height: 100%; display: flex; flex-direction: column;}
 
-.title-box {position: fixed; display: flex; flex-direction: column; padding: 5% 15vw 0; height: fit-content; width: 70vw; background-color: var(--secondary-color); z-index: 10}
-.title-box > .title-container {flex: 1; display: flex; flex-direction: row; justify-content:left;}
+.title-box {position: fixed; display: flex; flex-direction: column; padding: 1% 15vw 0; height: 12vw; width: 70vw; background-color: var(--secondary-color); z-index: 10}
+.title-box > .title-container {flex: 1; display: flex; flex-direction: column; justify-content:left;}
 .title-box .title {display: flex; flex-direction: row;}
 .title-box h1 {font-size: 5vw;}
 .title-box h2 {position: relative; bottom: 0; font-size: 1vw;}
 .title-box .arrows {display: flex; width: fit-content; flex-direction: row; justify-content: space-around; margin: 0 5vw}
 .title-box .arrows button {font-size: 4vw; padding-right: 2vw;}
-#puzzle-id {width: 100%}
+#puzzle-id {width: 100%; font-size: 1.5vw;}
 
 .divisor {height:5px; width: 90%; margin: 25px 5%; background-color: var(--tertiary-color); flex-shrink: 0;}
 
 .right {display:flex; flex-direction: column; width:100%; gap: 2vh;}
-.passage {user-select: all; flex: 1; overflow-y: auto; overflow-x: hidden; overflow-wrap: break-word; height:fit-content; min-height: 40vh;}
+.passage {user-select: all; flex: 1; overflow-y: auto; overflow-x: hidden; overflow-wrap: break-word; height:fit-content; min-height: 40vh; width: 60%; align-self: center;}
 .passage h3 {text-align: center; padding: 1vh 2vw; font-size: 4vw;}
 .passage div {padding: 1vh 2vw 4vh 2vw; text-align: center; font-size: 4vw}
 

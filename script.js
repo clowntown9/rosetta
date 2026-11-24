@@ -49,7 +49,7 @@ function answer(answer) {
     if (answer == puzzles[todayId].answer) {
         document.getElementById("statusMsg").textContent = "Correct!"
         status.style.backgroundColor = "var(--tertiary-color)"
-        document.cookie = `completed=[]`
+        document.cookie = `completed=[${todayId}]`
     } else {
         document.getElementById("statusMsg").textContent = "Incorrect"
         status.style.backgroundColor = "var(--main-color)"

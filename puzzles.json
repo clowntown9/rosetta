@@ -1,6 +1,36 @@
 [
   {
-    "name": "intro",
+    "name": "this is a really long puzzle name for testing purposes",
+    "title": "&beta;",
+    "passage": "&alpha;&beta;&gamma;&delta;",
+    "key": [
+      [
+        "&alpha;&beta;&gamma;&epsilon;",
+        "I am eating an orange."
+      ],
+      [
+        "&delta;",
+        "Apple."
+      ],
+      [
+        "&epsilon;",
+        "Orange."
+      ],
+      [
+        "&zeta;",
+        "Banana."
+      ]
+    ],
+    "question": "Which fruit is the author eating?",
+    "options": [
+      "Apple",
+      "Orange",
+      "Banana"
+    ],
+    "answer": 0
+  },
+  {
+    "name": "puzzle 2: electric boogaloo",
     "title": "&beta;",
     "passage": "&alpha;&beta;&gamma;&delta;",
     "key": [
